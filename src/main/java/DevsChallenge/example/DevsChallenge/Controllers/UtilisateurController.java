@@ -53,8 +53,8 @@ public class UtilisateurController {
         String ProfileNom = StringUtils.cleanPath(profile.getOriginalFilename());
         Utilisateurs utilisateuramodifier = new Utilisateurs(username,email,nom,prenom,password,ProfileNom);
 
-        String uploDirPays = "C:\\Users\\mccamara\\Desktop\\porto";
-        Image.ProfilesImage(uploDirPays, ProfileNom, profile);
+        String uploProfile = "C:\\Users\\mccamara\\Desktop\\porto";
+        Image.ProfilesImage(uploProfile, ProfileNom, profile);
         log.info("Collaborateur "+utilisateuramodifier.getUsername() + " modifié avec succès");
         utilisateurservice.Modifier(utilisateuramodifier);
         return "Modification reussie avec succès";
