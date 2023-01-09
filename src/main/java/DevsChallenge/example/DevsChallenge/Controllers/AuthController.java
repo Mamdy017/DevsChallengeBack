@@ -18,6 +18,8 @@ import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 import DevsChallenge.example.DevsChallenge.Repositories.RolesRepostory;
 import DevsChallenge.example.DevsChallenge.Repositories.UtilisateurRepository;
 import DevsChallenge.example.DevsChallenge.Services.UserDetailsImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Api(value = "devsCiwara", description = "")
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/devs/auth/")
 public class AuthController {
@@ -47,6 +50,7 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @ApiOperation(value = "Connexion")
     @PostMapping("/connexion")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Connexion connexion) {
 
@@ -58,7 +62,9 @@ public class AuthController {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
+                .map(item -> {
+                    return item.getAuthority();
+                })
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(new JwtResponse(jwt,
@@ -70,7 +76,7 @@ public class AuthController {
 
 
 
-
+    @ApiOperation(value = "Inscription")
     @PostMapping("/inscription")
     public ResponseEntity<?> registerUser(@Valid @RequestBody Inscription inscription) {
         if (utilisateurRepository.existsByUsername(inscription.getUsername())) {
@@ -91,20 +97,21 @@ public class AuthController {
                 inscription.getEmail(),
                 inscription.getNom(),
                 inscription.getPrenom(),
-                encoder.encode(inscription.getPassword()));
+                encoder.encode(inscription.getPassword()),
+                inscription.getProfile());
 
         Set<String> strRoles = inscription.getRoles();
         Set<Roles> roles = new HashSet<>();
 
         if (strRoles == null) {
-            Roles userRole = rolesRepository.findByName(Role.user)
+            Roles userRole = rolesRepository.findByName(Role.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Erreur: Cet role n'existe pas."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
-                        Roles adminRole = rolesRepository.findByName(Role.admin)
+                        Roles adminRole = rolesRepository.findByName(Role.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Erreur: Cet role n'existe pas."));
                         roles.add(adminRole);
 
@@ -116,7 +123,7 @@ public class AuthController {
 
                         break;
                     default:
-                        Roles userRole = rolesRepository.findByName(Role.admin)
+                        Roles userRole = rolesRepository.findByName(Role.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Erreur: Cet role n'existe pas."));
                         roles.add(userRole);
                 }

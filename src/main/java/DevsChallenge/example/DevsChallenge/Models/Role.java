@@ -1,7 +1,7 @@
 package DevsChallenge.example.DevsChallenge.Models;
 
 public enum Role {
-    admin,
-    user,
+    ROLE_ADMIN,
+    ROLE_USER,
     recruteur
 }

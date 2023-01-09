@@ -35,6 +35,7 @@ public class Utilisateurs {
     private String prenom;
     @Size(max=150)
     private String password;
+    private String profile;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "user_roles",
@@ -42,11 +43,12 @@ public class Utilisateurs {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Roles> roles = new HashSet<>();
 
-    public Utilisateurs(String username, String email, String nom, String prenom, String password) {
+    public Utilisateurs(String username, String email, String nom, String prenom, String password, String profile) {
         this.email=email;
         this.nom=nom;
         this.prenom=prenom;
         this.password=password;
         this.username=username;
+        this.profile = profile;
     }
 }

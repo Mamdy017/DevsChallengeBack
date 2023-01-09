@@ -20,6 +20,6 @@ public class Inscription {
     private String prenom;
     @Size(max=150)
     private String password;
+    private String profile;
     private Set<String> roles;
-
 }
