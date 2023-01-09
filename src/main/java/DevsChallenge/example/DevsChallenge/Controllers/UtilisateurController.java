@@ -1,14 +1,20 @@
 package DevsChallenge.example.DevsChallenge.Controllers;
 
+import DevsChallenge.example.DevsChallenge.Images.Image;
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 import DevsChallenge.example.DevsChallenge.Services.Utilisateurservice;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Api(value = "devsCiwara", description = "")
@@ -43,9 +49,12 @@ public class UtilisateurController {
             @RequestParam String password,
             @RequestParam String prenom,
             @RequestParam String nom,
-            @RequestParam String profile){
-        Utilisateurs utilisateuramodifier = new Utilisateurs(username,email,nom,prenom,password,profile);
+            @Param("profile") MultipartFile profile) throws IOException {
+        String ProfileNom = StringUtils.cleanPath(profile.getOriginalFilename());
+        Utilisateurs utilisateuramodifier = new Utilisateurs(username,email,nom,prenom,password,ProfileNom);
 
+        String uploDirPays = "C:\\Users\\mccamara\\Desktop\\porto";
+        Image.ProfilesImage(uploDirPays, ProfileNom, profile);
         log.info("Collaborateur "+utilisateuramodifier.getUsername() + " modifié avec succès");
         utilisateurservice.Modifier(utilisateuramodifier);
         return "Modification reussie avec succès";
