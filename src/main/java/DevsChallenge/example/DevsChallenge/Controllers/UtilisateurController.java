@@ -1,6 +1,7 @@
 package DevsChallenge.example.DevsChallenge.Controllers;
 
 import DevsChallenge.example.DevsChallenge.Images.Image;
+import DevsChallenge.example.DevsChallenge.Images.SaveImage;
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 import DevsChallenge.example.DevsChallenge.Services.Utilisateurservice;
 import io.swagger.annotations.Api;
@@ -60,10 +61,15 @@ public class UtilisateurController {
         String ProfileNom = StringUtils.cleanPath(profile.getOriginalFilename());
         Utilisateurs utilisateuramodifier = new Utilisateurs(username,email,nom,prenom,password,ProfileNom);
 
-        String uploProfile = "C:\\Users\\Camara\\Desktop\\dev3";
-        Image.ProfilesImage(uploProfile, ProfileNom, profile);
-        log.info("Collaborateur "+utilisateuramodifier.getUsername() + " modifié avec succès");
-        utilisateurservice.Modifier(Id, utilisateuramodifier);
+        /*String uploProfile = "C:\\Users\\Camara\\Desktop\\dev3";
+        Image.ProfilesImage(uploProfile, ProfileNom, profile); */
+
+        if (profile != null){
+
+            utilisateuramodifier.setProfile(SaveImage.save(profile,utilisateuramodifier.getProfile()));
+            log.info("Collaborateur "+utilisateuramodifier.getUsername() + " modifié avec succès");
+            utilisateurservice.Modifier(Id, utilisateuramodifier);
+        }
         return "Modification reussie avec succès";
     }
 
