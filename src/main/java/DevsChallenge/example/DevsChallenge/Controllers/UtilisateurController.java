@@ -42,15 +42,6 @@ public class UtilisateurController {
         return utilisateurservice.userlist();
 
     }
-
-
- /*   @PutMapping({"/modifier"})
-    public String ModierUser(@RequestBody Utilisateurs users){
-        log.info("Collaborateur "+users.getUsername() + " modifié avec succès");
-        utilisateurservice.Modifier(users);
-        return "Modification reussie avec succès";
-    }*/
-
     @PutMapping({"/modifier/{Id}"})
     public String ModierUser(
             @PathVariable Long Id,
@@ -61,12 +52,8 @@ public class UtilisateurController {
             @RequestParam String nom,
             @Param("profile") MultipartFile profile) throws IOException {
         String ProfileNom = StringUtils.cleanPath(profile.getOriginalFilename());
-        Utilisateurs utilisateuramodifier = new Utilisateurs(username,email,nom,prenom,password,ProfileNom);
+        Utilisateurs utilisateuramodifier = new Utilisateurs(username,email,nom,prenom,password,profile.getOriginalFilename());
         System.out.println(utilisateuramodifier);
-
-        /*String uploProfile = "C:\\Users\\Camara\\Desktop\\dev3";
-        Image.ProfilesImage(uploProfile, ProfileNom, profile); */
-
         if (profile != null){
 
             utilisateuramodifier.setProfile(SaveImage.save(profile,ProfileNom));
