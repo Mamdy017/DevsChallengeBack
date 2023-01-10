@@ -69,7 +69,7 @@ public class UtilisateurController {
 
         if (profile != null){
 
-            utilisateuramodifier.setProfile(SaveImage.save(profile,utilisateuramodifier.getProfile()));
+            utilisateuramodifier.setProfile(SaveImage.save(profile,ProfileNom));
             log.info("Collaborateur "+utilisateuramodifier.getUsername() + " modifié avec succès");
             System.out.println(utilisateuramodifier);
             utilisateurservice.Modifier(Id, utilisateuramodifier);

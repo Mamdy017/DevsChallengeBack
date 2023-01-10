@@ -28,26 +28,25 @@ public class SaveImage {
         try {
             int index = Objects.requireNonNull(file.getOriginalFilename()).lastIndexOf(".");
 
-            Path chemin = Paths.get(location);
+            Path chemin = Paths.get(Userlocation);
             if (!Files.exists(chemin)) {
                 // si le fichier n'existe pas deja
                 Files.createDirectories(chemin);
                 Files.copy(file.getInputStream(), chemin
-                        .resolve(nomFichier + file.getOriginalFilename()+file.getOriginalFilename().substring(index).toLowerCase()));
+                        .resolve(nomFichier.substring(0, file.getOriginalFilename().length()-0).toLowerCase()));
                 src = server + nomFichier
-                        + file.getOriginalFilename()+ file.getOriginalFilename().substring(index).toLowerCase();
+                        + file.getOriginalFilename().substring(0, file.getOriginalFilename().length()-0).toLowerCase();
             } else {
                 // si le fichier existe pas deja
-                String newPath = location + nomFichier +file.getOriginalFilename()
-                        + file.getOriginalFilename().substring(index).toLowerCase();
+                String newPath = location + nomFichier
+                        .substring(0, file.getOriginalFilename().length()-0).toLowerCase();
                 Path newchemin = Paths.get(newPath);
                 if (!Files.exists(newchemin)) {
                     // si le fichier n'existe pas deja
                     Files.copy(file.getInputStream(), chemin
                             .resolve(
-                                    nomFichier +file.getOriginalFilename()+ file.getOriginalFilename().substring(index).toLowerCase()));
-                    src = server + nomFichier +file.getOriginalFilename()
-                            + file.getOriginalFilename().substring(index).toLowerCase();
+                                    nomFichier .substring(0, file.getOriginalFilename().length()-0).toLowerCase()));
+                    src = server + nomFichier .substring(0, file.getOriginalFilename().length()-0).toLowerCase();
                 } else {
                     // si le fichier existe pas deja on le suprime et le recrèe
 
@@ -55,9 +54,9 @@ public class SaveImage {
 
                     Files.copy(file.getInputStream(), chemin
                             .resolve(
-                                    nomFichier + file.getOriginalFilename()+ file.getOriginalFilename().substring(index).toLowerCase()));
+                                    nomFichier .substring(index).toLowerCase()));
                     src = server + nomFichier
-                            +file.getOriginalFilename()+ file.getOriginalFilename().substring(index).toLowerCase();
+                            +file.getOriginalFilename().substring(index).toLowerCase();
                 }
 
             }
