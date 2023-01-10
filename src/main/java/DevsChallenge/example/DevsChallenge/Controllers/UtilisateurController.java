@@ -5,6 +5,7 @@ import DevsChallenge.example.DevsChallenge.Images.SaveImage;
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 import DevsChallenge.example.DevsChallenge.Services.Utilisateurservice;
 import io.swagger.annotations.Api;
+import lombok.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/devs/auth/utilisateur")
 @RestController
+@ToString
 public class UtilisateurController {
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
     @Autowired
@@ -60,6 +62,7 @@ public class UtilisateurController {
             @Param("profile") MultipartFile profile) throws IOException {
         String ProfileNom = StringUtils.cleanPath(profile.getOriginalFilename());
         Utilisateurs utilisateuramodifier = new Utilisateurs(username,email,nom,prenom,password,ProfileNom);
+        System.out.println(utilisateuramodifier);
 
         /*String uploProfile = "C:\\Users\\Camara\\Desktop\\dev3";
         Image.ProfilesImage(uploProfile, ProfileNom, profile); */
@@ -68,6 +71,7 @@ public class UtilisateurController {
 
             utilisateuramodifier.setProfile(SaveImage.save(profile,utilisateuramodifier.getProfile()));
             log.info("Collaborateur "+utilisateuramodifier.getUsername() + " modifié avec succès");
+            System.out.println(utilisateuramodifier);
             utilisateurservice.Modifier(Id, utilisateuramodifier);
         }
         return "Modification reussie avec succès";
