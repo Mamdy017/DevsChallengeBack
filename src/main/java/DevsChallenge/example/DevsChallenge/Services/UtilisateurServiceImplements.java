@@ -22,13 +22,18 @@ public class UtilisateurServiceImplements implements Utilisateurservice {
     }
 
     @Override
+    public List<Object[]> userlist() {
+        return utilisateurRepository.userlist();
+    }
+
+    @Override
     public String Supprimer(Long id_users) {
         return null;
     }
 
     @Override
-    public String Modifier(Utilisateurs users) {
-        return utilisateurRepository.findByUsername(users.getUsername()).map(
+    public String Modifier(Long Id, Utilisateurs users) {
+        return utilisateurRepository.findById(Id).map(
                 use ->{
                     use.setEmail(users.getEmail());
                     use.setUsername(users.getUsername());

@@ -34,6 +34,12 @@ public class UtilisateurController {
         return utilisateurservice.Afficher();
     }
 
+    @GetMapping("/users")
+    public List<Object[]> Afficher() {
+        return utilisateurservice.userlist();
+
+    }
+
 
  /*   @PutMapping({"/modifier"})
     public String ModierUser(@RequestBody Utilisateurs users){
@@ -42,8 +48,9 @@ public class UtilisateurController {
         return "Modification reussie avec succès";
     }*/
 
-    @PutMapping({"/modifier"})
+    @PutMapping({"/modifier/{Id}"})
     public String ModierUser(
+            @PathVariable Long Id,
             @RequestParam String username,
             @RequestParam String email,
             @RequestParam String password,
@@ -53,10 +60,10 @@ public class UtilisateurController {
         String ProfileNom = StringUtils.cleanPath(profile.getOriginalFilename());
         Utilisateurs utilisateuramodifier = new Utilisateurs(username,email,nom,prenom,password,ProfileNom);
 
-        String uploProfile = "C:\\Users\\mccamara\\Desktop\\porto";
+        String uploProfile = "C:\\Users\\Camara\\Desktop\\dev3";
         Image.ProfilesImage(uploProfile, ProfileNom, profile);
         log.info("Collaborateur "+utilisateuramodifier.getUsername() + " modifié avec succès");
-        utilisateurservice.Modifier(utilisateuramodifier);
+        utilisateurservice.Modifier(Id, utilisateuramodifier);
         return "Modification reussie avec succès";
     }
 
