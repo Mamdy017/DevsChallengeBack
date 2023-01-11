@@ -99,7 +99,6 @@ public class AuthController {
                 inscription.getPrenom(),
                 encoder.encode(inscription.getPassword()),
                 inscription.getProfile());
-
         Set<String> strRoles = inscription.getRoles();
         Set<Roles> roles = new HashSet<>();
 
@@ -131,6 +130,7 @@ public class AuthController {
         }
 
         user.setRoles(roles);
+        user.setProfile("http://127.0.0.1/DesCiwara/Images/avatar.png");
         utilisateurRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("Utilisateur enregistré avec succes!"));

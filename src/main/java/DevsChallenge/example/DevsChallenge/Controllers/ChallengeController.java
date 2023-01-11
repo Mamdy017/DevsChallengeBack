@@ -1,7 +1,10 @@
 package DevsChallenge.example.DevsChallenge.Controllers;
 
+import DevsChallenge.example.DevsChallenge.Messages.EnvoyeMailService;
 import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Challenge;
+import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
+import DevsChallenge.example.DevsChallenge.Repositories.UtilisateurRepository;
 import DevsChallenge.example.DevsChallenge.Services.ChallengeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(value = "devsCiwara", description = "")
@@ -22,12 +26,33 @@ public class ChallengeController {
     @Autowired
     ChallengeService challengeService;
 
+    @Autowired
+    UtilisateurRepository utilisateurRepository;
+
+    @Autowired
+    EnvoyeMailService envoyeMailService;
+
     @ApiOperation(value = "Ajouter2 un challenge")
     @PostMapping("/ajout")
     public Object creer (@RequestBody Challenge challenge){
 
         try {
+
+
+            List<Utilisateurs> listutilisateurs = new ArrayList<>();
+
+            List<String> emails = new ArrayList<>();
+
+            listutilisateurs = utilisateurRepository.findAll();
+
+            for(Utilisateurs u : listutilisateurs){
+                emails.add(u.getEmail());
+            }
+
+            envoyeMailService.sendEmailToMultipleRecipients("test","test objet",emails);
+
             return challengeService.creer(challenge);
+
         } catch (Exception e) {
             return Message.ErreurReponse(" la techno " + challenge.getTitre() + " existe déjà", HttpStatus.OK, null);
         }

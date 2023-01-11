@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "devsCiwara", description = "")
 @CrossOrigin(origins = "*", maxAge = 3600)
+@Api(value = "devsCiwara", description = "azertyuio")
 @RequestMapping("/devs/auth/cate")
 @RestController
 @ToString

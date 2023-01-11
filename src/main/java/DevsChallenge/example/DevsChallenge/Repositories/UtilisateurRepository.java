@@ -16,6 +16,6 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateurs, Long>
 
     Boolean existsByEmail(String email);
 
-    @Query(value="SELECT utilisateur.nom,utilisateur.prenom FROM `user_roles`, utilisateur, roles WHERE user_roles.role_id=2 AND utilisateur.id=user_roles.user_id GROUP BY utilisateur.id",nativeQuery=true)
+    @Query(value="SELECT utilisateur.email FROM `user_roles`, utilisateur, roles WHERE user_roles.role_id=2 AND utilisateur.id=user_roles.user_id GROUP BY utilisateur.id",nativeQuery=true)
     List<Object[]> userlist();
 }
