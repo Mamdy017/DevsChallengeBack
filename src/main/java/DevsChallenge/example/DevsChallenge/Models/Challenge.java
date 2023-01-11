@@ -23,8 +23,8 @@ public class Challenge {
     @Size(max = 20)
     private String titre;
     private String critere;
-    private Date datedebut;
-    private Date datefin;
+    private String datedebut;
+    private String datefin;
 
     @ManyToOne
     Categories categories;
