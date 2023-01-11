@@ -48,8 +48,13 @@ public class ChallengeController {
             for(Utilisateurs u : listutilisateurs){
                 emails.add(u.getEmail());
             }
+            String mon = "DevsCiwara vient de créer la challenge " + challenge.getTitre() + " en savoir plus  https://chat.openai.com/auth/login"
+                    ;
+            System.out.println(mon);
 
-            envoyeMailService.sendEmailToMultipleRecipients("test","test objet",emails);
+
+
+            envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon,emails);
 
             return challengeService.creer(challenge);
 
