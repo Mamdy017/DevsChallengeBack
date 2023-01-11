@@ -57,12 +57,31 @@ public class UtilisateurController {
         if (profile != null){
 
             utilisateuramodifier.setProfile(SaveImage.save(profile,ProfileNom));
-            log.info("Collaborateur "+utilisateuramodifier.getUsername() + " modifié avec succès");
+            log.info("Utilisateur "+utilisateuramodifier.getUsername() + " modifié avec succès");
             System.out.println(utilisateuramodifier);
             utilisateurservice.Modifier(Id, utilisateuramodifier);
         }
         return "Modification reussie avec succès";
     }
+
+   /* @PutMapping("/modifier/{id}")
+    public String modifyUser(
+            @PathVariable Long id,
+            @RequestBody Utilisateurs utilisateur,
+            @RequestParam("profile") MultipartFile profile) throws IOException {
+
+        String ProfileNom = StringUtils.cleanPath(profile.getOriginalFilename());
+
+        if (profile != null) {
+            utilisateur.setProfile(SaveImage.save(profile, ProfileNom));
+        }
+
+        utilisateurservice.Modifier(id, utilisateur);
+        log.info("User {} modified successfully", utilisateur.getUsername());
+
+        return "Modification successful";
+    }
+*/
 
 
 }
