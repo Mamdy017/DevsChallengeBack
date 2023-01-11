@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.DateTimeException;
 import java.util.Date;
@@ -28,5 +25,11 @@ public class Challenge {
     private String critere;
     private Date datedebut;
     private Date datefin;
+
+    @ManyToOne
+    Categories categories;
+    @ManyToOne
+    Technologies technologies;
+
 
 }

@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 @Data
@@ -23,5 +20,7 @@ public class Commentaire {
     private Long id;
     @Size(max = 20)
     private String description;
+    @ManyToOne
+    Question question;
 
 }
