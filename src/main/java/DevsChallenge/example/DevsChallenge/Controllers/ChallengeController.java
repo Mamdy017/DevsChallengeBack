@@ -79,10 +79,10 @@ public class ChallengeController {
         System.out.println(mon);
 
         // check if the emails list is not empty before calling the sendEmailToMultipleRecipients method
-        if (!emails.isEmpty()) {
+       /* if (!emails.isEmpty()) {
             envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon,emails);
             return Message.set("Message non envoyé",true);
-        }
+        }*/
         this.challengeService.creer(challenge);
         return Message.set("Challenge creer et utlisateurs avertis avec succees",true);
     }

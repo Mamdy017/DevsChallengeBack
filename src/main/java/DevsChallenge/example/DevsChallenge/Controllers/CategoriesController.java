@@ -21,7 +21,7 @@ public class CategoriesController {
     @Autowired
     CategoriesService categoriesService;
 
-    @ApiOperation(value = "Ajouter2 un pays")
+    @ApiOperation(value = "Ajouter2 un categories")
     @PostMapping("/ajout")
     public Object creer (@RequestBody Categories categories){
 
