@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,12 +36,13 @@ public class QuestionContrller {
 
     @ApiOperation(value = "Ajouter une question")
     @PostMapping("/ajout/{challengeId}/{userid}")
-    public Object creer (@PathVariable("idchallenge") Long challengeId,@PathVariable("userid") Long userid, @RequestBody Question question){
+    public Object creer (@PathVariable("challengeId") Long challengeId, @PathVariable("userid") Long userid, @Param("question") String question){
 
 
             Challenge ch = challengeService.ChallengeParId(challengeId);
             Utilisateurs user =utilisateurservice.userParId(userid);
-            Question Q = new Question(question);
+            Question Q = new Question();
+            Q.setQuestion(question);
             Q.setChallenge(ch);
             Q.setUtilisateurs(user);
 
