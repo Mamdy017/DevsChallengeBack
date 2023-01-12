@@ -39,4 +39,9 @@ public class ChallengeServiceImpl implements ChallengeService{
         this.challengeRepository.deleteById(id);
         return "Challenge supprime avec succes";
     }
+
+    @Override
+    public Challenge ChallengeParId(Long id) {
+        return challengeRepository.findById(id).get();
+    }
 }

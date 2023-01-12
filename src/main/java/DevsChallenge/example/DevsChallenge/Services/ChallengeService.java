@@ -12,4 +12,6 @@ public interface ChallengeService {
     Challenge modifier(Long id, Challenge challenge);
 
     String supprimer(Long id);
+
+    Challenge ChallengeParId(Long id);
 }

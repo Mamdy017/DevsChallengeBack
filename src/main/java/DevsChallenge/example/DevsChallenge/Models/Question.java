@@ -19,4 +19,12 @@ public class Question {
     private String question;
     @ManyToOne
     Challenge challenge;
+    @ManyToOne
+    Utilisateurs utilisateurs;
+
+
+
+    public Question(Question question) {
+        this.question= String.valueOf(question);
+    }
 }
