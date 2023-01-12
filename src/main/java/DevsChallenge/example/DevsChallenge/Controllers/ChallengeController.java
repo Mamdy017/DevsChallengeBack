@@ -10,7 +10,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -37,29 +36,20 @@ public class ChallengeController {
     public Object creer (@RequestBody Challenge challenge){
 
         try {
-
-
             List<Utilisateurs> listutilisateurs = new ArrayList<>();
-
             List<String> emails = new ArrayList<>();
-
             listutilisateurs = utilisateurRepository.findAll();
-
             for(Utilisateurs u : listutilisateurs){
                 emails.add(u.getEmail());
             }
             String mon = "DevsCiwara vient de créer la challenge " + challenge.getTitre() + " en savoir plus  https://chat.openai.com/auth/login"
                     ;
-            System.out.println(mon);
-
-
-
-            envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon,emails);
+                    envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon,emails);
 
             return challengeService.creer(challenge);
 
         } catch (Exception e) {
-            return Message.ErreurReponse(" la techno " + challenge.getTitre() + " existe déjà", HttpStatus.OK, null);
+            return Message.set(" la techno " + challenge.getTitre() + " existe déjà", true);
         }
     }
 

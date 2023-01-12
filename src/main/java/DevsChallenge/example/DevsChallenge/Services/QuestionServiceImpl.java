@@ -1,5 +1,6 @@
 package DevsChallenge.example.DevsChallenge.Services;
 
+import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Question;
 import DevsChallenge.example.DevsChallenge.Repositories.QuestionRepository;
 import lombok.AllArgsConstructor;
@@ -32,8 +33,14 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public String supprimer(Long id) {
+    public Object supprimer(Long id) {
         this.questionRepository.deleteById(id);
-        return "Question supprimée avec succès";
+        return Message.set( "Question supprimée avec succès", true);
+    }
+
+    @Override
+    public Question solutionParId(Long id) {
+
+        return this.questionRepository.findById(id).get();
     }
 }

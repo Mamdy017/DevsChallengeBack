@@ -32,4 +32,7 @@ public class Challenge {
     Technologies technologies;
 
 
+    public Challenge(Long challengeid) {
+        this.id=challengeid;
+    }
 }

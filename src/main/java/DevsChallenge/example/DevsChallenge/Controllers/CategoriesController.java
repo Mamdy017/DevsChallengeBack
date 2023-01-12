@@ -7,7 +7,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class CategoriesController {
         try {
             return categoriesService.creer(categories);
         } catch (Exception e) {
-            return Message.ErreurReponse(" categories " + categories.getNom() + " existe déjà", HttpStatus.OK, null);
+            return Message.set(" categories " + categories.getNom() + " existe déjà",  true);
         }
     }
 

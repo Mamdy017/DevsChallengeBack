@@ -54,4 +54,8 @@ public class Utilisateurs {
         this.profile = profile;
         this.mois=mois;
     }
+
+    public Utilisateurs(Long userdid) {
+        this.id = userdid;
+    }
 }

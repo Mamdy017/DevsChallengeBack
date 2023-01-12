@@ -1,6 +1,5 @@
 package DevsChallenge.example.DevsChallenge.Controllers;
 
-import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Challenge;
 import DevsChallenge.example.DevsChallenge.Models.Question;
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
@@ -13,7 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,7 +43,6 @@ public class QuestionContrller {
             Q.setQuestion(question);
             Q.setChallenge(ch);
             Q.setUtilisateurs(user);
-
             return questionService.creer(Q);
 
     }
@@ -64,7 +61,7 @@ public class QuestionContrller {
 
     @ApiOperation(value = "Supprimer question")
     @DeleteMapping("/Supprimer/{Id}")
-    public String Supprimer(@PathVariable Long Id) {
+    public Object Supprimer(@PathVariable Long Id) {
 
         return questionService.supprimer(Id);
     }

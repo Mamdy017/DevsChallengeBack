@@ -1,13 +1,13 @@
 package DevsChallenge.example.DevsChallenge.Controllers;
 
 import DevsChallenge.example.DevsChallenge.Messages.Message;
+
 import DevsChallenge.example.DevsChallenge.Models.Technologies;
 import DevsChallenge.example.DevsChallenge.Services.TechnoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class TechnologiesController {
         try {
             return technoService.creer(technologies);
         } catch (Exception e) {
-            return Message.ErreurReponse(" la techno " + technologies.getNom() + " existe déjà", HttpStatus.OK, null);
+            return Message.set(" la techno " + technologies.getNom() + " existe déjà",true);
         }
     }
 

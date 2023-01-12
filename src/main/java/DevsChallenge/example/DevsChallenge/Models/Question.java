@@ -27,4 +27,8 @@ public class Question {
     public Question(Question question) {
         this.question= String.valueOf(question);
     }
+
+    public Question(Long questionid) {
+        this.id=questionid;
+    }
 }

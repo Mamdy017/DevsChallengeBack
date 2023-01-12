@@ -52,8 +52,8 @@ public class UtilisateurController {
             @RequestParam String nom,
             @RequestParam int mois,
             @Param("profile") MultipartFile profile) throws IOException {
-        String ProfileNom = StringUtils.cleanPath(profile.getOriginalFilename());
-        Utilisateurs utilisateuramodifier = new Utilisateurs(username,email,nom,prenom,password,profile.getOriginalFilename(),mois);
+        String ProfileNom = username +".jpg";
+        Utilisateurs utilisateuramodifier = new Utilisateurs(username,email,nom,prenom,password,ProfileNom,mois);
         System.out.println(utilisateuramodifier);
         if (profile != null){
 

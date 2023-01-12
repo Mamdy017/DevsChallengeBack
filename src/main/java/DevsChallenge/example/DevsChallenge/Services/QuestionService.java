@@ -14,5 +14,6 @@ public interface QuestionService {
 
     Question modifier(Long id, Question question);
 
-    String supprimer(Long id);
+    Object supprimer(Long id);
+    Question solutionParId(Long id);
 }

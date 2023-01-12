@@ -22,5 +22,7 @@ public class Commentaire {
     private String description;
     @ManyToOne
     Question question;
+    @ManyToOne
+    Utilisateurs utilisateurs;
 
 }
