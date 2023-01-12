@@ -1,5 +1,7 @@
 package DevsChallenge.example.DevsChallenge.Controllers;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -79,6 +81,8 @@ public class AuthController {
     @ApiOperation(value = "Inscription")
     @PostMapping("/inscription")
     public ResponseEntity<?> registerUser(@Valid @RequestBody Inscription inscription) {
+
+
         if (utilisateurRepository.existsByUsername(inscription.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -98,13 +102,16 @@ public class AuthController {
                 inscription.getNom(),
                 inscription.getPrenom(),
                 encoder.encode(inscription.getPassword()),
-                inscription.getProfile());
+                inscription.getProfile(),
+                inscription.getMois()
+        );
         Set<String> strRoles = inscription.getRoles();
         Set<Roles> roles = new HashSet<>();
 
         if (strRoles == null) {
             Roles userRole = rolesRepository.findByName(Role.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Erreur: Cet role n'existe pas."));
+
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
@@ -131,6 +138,7 @@ public class AuthController {
 
         user.setRoles(roles);
         user.setProfile("http://127.0.0.1/DesCiwara/Images/avatar.png");
+        user.setMois(LocalDate.now().getMonthValue());
         utilisateurRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("Utilisateur enregistré avec succes!"));
