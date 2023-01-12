@@ -33,7 +33,7 @@ public class ChallengeController {
 
     @ApiOperation(value = "Ajouter2 un challenge")
     @PostMapping("/ajout")
-    public Object creer (@RequestBody Challenge challenge){
+ /*   public Object creer (@RequestBody Challenge challenge){
 
         try {
             List<Utilisateurs> listutilisateurs = new ArrayList<>();
@@ -51,7 +51,42 @@ public class ChallengeController {
         } catch (Exception e) {
             return Message.set(" la techno " + challenge.getTitre() + " existe déjà", true);
         }
+    }*/
+
+    public Object creer (@RequestBody Challenge challenge){
+
+        if (challenge == null) {
+            return Message.set("Challenge ne peut pas etre null", true);
+            // return an error message or a specific HTTP status code to indicate that the request body is missing
+        }
+        if (challenge.getTitre() == null || challenge.getTitre().isEmpty()) {
+            return Message.set("Titre est null", true);
+            // return an error message or a specific HTTP status code to indicate that the challenge title is missing
+        }
+
+        List<Utilisateurs> listutilisateurs = new ArrayList<>();
+        List<String> emails = new ArrayList<>();
+
+        listutilisateurs = utilisateurRepository.findAll();
+        if (!listutilisateurs.isEmpty()) {
+            for(Utilisateurs u : listutilisateurs){
+                emails.add(u.getEmail());
+            }
+        } else {
+            System.out.println("No users in the list.");
+        }
+        String mon = "DevsCiwara vient de créer la challenge " + challenge.getTitre() + " en savoir plus  https://chat.openai.com/auth/login";
+        System.out.println(mon);
+
+        // check if the emails list is not empty before calling the sendEmailToMultipleRecipients method
+        if (!emails.isEmpty()) {
+            envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon,emails);
+            return Message.set("Message non envoyé",true);
+        }
+        this.challengeService.creer(challenge);
+        return Message.set("Challenge creer et utlisateurs avertis avec succees",true);
     }
+
 
     @ApiOperation(value = "Afficher techonologies")
     @GetMapping("/afficher")
