@@ -9,15 +9,18 @@ import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 import DevsChallenge.example.DevsChallenge.Repositories.SolutionRepository;
 import DevsChallenge.example.DevsChallenge.Services.SolutionService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
 @Service
 public class SolutionServiceImpl implements SolutionService {
     private final SolutionRepository solutionRepository;
-   @Override
+   /*@Override
     public Object creer(Solution solution, Utilisateurs utilisateurs, Challenge challenge, Team team) {
 
         Boolean T= solutionRepository.existsByTeamAndChallenge(team,challenge);
@@ -39,7 +42,22 @@ public class SolutionServiceImpl implements SolutionService {
         }
 
     }
+*/
 
+
+    @Override
+    public ResponseEntity<Object> creer(Solution solution, Utilisateurs utilisateurs, Challenge challenge, Team team) {
+        Boolean T = solutionRepository.existsByTeamAndChallenge(team, challenge);
+        Boolean b = solutionRepository.existsByUtilisateursAndChallenge(utilisateurs, challenge);
+        LocalDate today = LocalDate.now();
+        if (challenge.getDatefin().isBefore(today)) {
+            return new ResponseEntity<>(Message.set("Le challenge est fermé, vous ne pouvez pas soumettre de solution", true), HttpStatus.OK);
+        } else if (!b && !T) {
+            return new ResponseEntity<>(solutionRepository.save(solution), HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(Message.set("Vous avez déjà ajouté une solution", true), HttpStatus.OK);
+        }
+    }
 
     @Override
     public List<Solution> afficher() {
