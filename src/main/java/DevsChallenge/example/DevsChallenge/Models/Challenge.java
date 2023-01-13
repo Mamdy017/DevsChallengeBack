@@ -9,6 +9,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -23,8 +24,8 @@ public class Challenge {
     @Size(max = 20)
     private String titre;
     private String critere;
-    private String datedebut;
-    private String datefin;
+    private LocalDate datedebut;
+    private LocalDate datefin;
 
     @ManyToOne
     Categories categories;
@@ -35,4 +36,13 @@ public class Challenge {
     public Challenge(Long challengeid) {
         this.id=challengeid;
     }
+
+
+    public void modifier(String titre, String critere, LocalDate datedebut,LocalDate datefin) {
+        this.titre = titre;
+        this.critere = critere;
+        this.datedebut=datedebut;
+        this.datefin=datefin;
+    }
+
 }

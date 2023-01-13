@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.List;
+
 
 
 @Data
@@ -20,20 +20,4 @@ public class Team {
     private Long id;
     private String nom;
 
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(
-            name = "challenge_team",
-            joinColumns = { @JoinColumn(name = "team_id") },
-            inverseJoinColumns = { @JoinColumn(name = "challenge_id") }
-    )
-    private List<Challenge> challenges;
-
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(
-            name = "utilisateur_team",
-            joinColumns = { @JoinColumn(name = "team_id") },
-            inverseJoinColumns = { @JoinColumn(name = "utilisateur_id") }
-    )
-    private List<Utilisateurs> utilisateurs;
-    // getters and setters
 }

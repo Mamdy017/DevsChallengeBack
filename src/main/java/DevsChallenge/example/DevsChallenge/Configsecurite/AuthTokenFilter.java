@@ -1,6 +1,6 @@
 package DevsChallenge.example.DevsChallenge.Configsecurite;
 
-import DevsChallenge.example.DevsChallenge.Services.UtilisateurServiceImpl;
+import DevsChallenge.example.DevsChallenge.ServiceImpl.UtilisateurServiceImpl;
 import java.io.IOException;
 
 import javax.servlet.FilterChain;

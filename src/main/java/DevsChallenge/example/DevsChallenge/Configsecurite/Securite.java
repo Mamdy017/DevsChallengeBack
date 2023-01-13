@@ -1,8 +1,6 @@
 package DevsChallenge.example.DevsChallenge.Configsecurite;
 
-import DevsChallenge.example.DevsChallenge.Services.UserDetailsImpl;
-
-import DevsChallenge.example.DevsChallenge.Services.UtilisateurServiceImpl;
+import DevsChallenge.example.DevsChallenge.ServiceImpl.UtilisateurServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

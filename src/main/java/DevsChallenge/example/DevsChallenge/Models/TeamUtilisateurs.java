@@ -6,27 +6,26 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @ToString
-public class Solution {
+public class TeamUtilisateurs {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Size(max=20)
-    private String nom;
-    private String lienGithub;
-    private String source;
-    @Size(max=7)
-    private String  point;
+    private int type;
     @ManyToOne
     Utilisateurs utilisateurs;
     @ManyToOne
     Challenge challenge;
-    @ManyToOne
-    Team team;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "team_teamusers",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "teamusers_id"))
+    private Set<Team> team = new HashSet<>();
 }

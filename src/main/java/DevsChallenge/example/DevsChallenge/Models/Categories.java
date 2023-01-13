@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 @Data
@@ -17,6 +14,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Entity
 @ToString
+@Table
 public class Categories {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,4 +22,9 @@ public class Categories {
     @Size(max = 20)
     private String nom;
     private String description;
+
+    public void modifier(String nom, String description) {
+        this.nom = nom;
+        this.description = description;
+    }
 }

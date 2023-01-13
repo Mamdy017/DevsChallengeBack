@@ -1,7 +1,8 @@
-package DevsChallenge.example.DevsChallenge.Services;
+package DevsChallenge.example.DevsChallenge.ServiceImpl;
 
 import DevsChallenge.example.DevsChallenge.Models.Technologies;
 import DevsChallenge.example.DevsChallenge.Repositories.TechnoRepository;
+import DevsChallenge.example.DevsChallenge.Services.TechnoService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.util.List;
 @Data
 @Service
 @AllArgsConstructor
-public class TechnoServiceImpl implements TechnoService{
+public class TechnoServiceImpl implements TechnoService {
 
     private final TechnoRepository technoRepository;
     @Override

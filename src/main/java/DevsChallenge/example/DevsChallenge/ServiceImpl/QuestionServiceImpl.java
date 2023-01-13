@@ -1,8 +1,9 @@
-package DevsChallenge.example.DevsChallenge.Services;
+package DevsChallenge.example.DevsChallenge.ServiceImpl;
 
 import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Question;
 import DevsChallenge.example.DevsChallenge.Repositories.QuestionRepository;
+import DevsChallenge.example.DevsChallenge.Services.QuestionService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;

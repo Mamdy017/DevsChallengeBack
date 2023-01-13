@@ -19,5 +19,7 @@ public class Appreciation {
     private String type;
     @ManyToOne
     Commentaire commentaire;
+    @ManyToOne
+    Utilisateurs utilisateurs;
 
 }

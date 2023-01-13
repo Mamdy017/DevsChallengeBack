@@ -2,8 +2,10 @@ package DevsChallenge.example.DevsChallenge.Controllers;
 
 import DevsChallenge.example.DevsChallenge.Messages.EnvoyeMailService;
 import DevsChallenge.example.DevsChallenge.Messages.Message;
+
 import DevsChallenge.example.DevsChallenge.Models.Challenge;
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
+
 import DevsChallenge.example.DevsChallenge.Repositories.UtilisateurRepository;
 import DevsChallenge.example.DevsChallenge.Services.ChallengeService;
 import io.swagger.annotations.Api;
@@ -33,9 +35,9 @@ public class ChallengeController {
 
     @ApiOperation(value = "Ajouter2 un challenge")
     @PostMapping("/ajout")
- /*   public Object creer (@RequestBody Challenge challenge){
+   public Object creer (@RequestBody Challenge challenge){
 
-        try {
+        /*try {
             List<Utilisateurs> listutilisateurs = new ArrayList<>();
             List<String> emails = new ArrayList<>();
             listutilisateurs = utilisateurRepository.findAll();
@@ -50,42 +52,10 @@ public class ChallengeController {
 
         } catch (Exception e) {
             return Message.set(" la techno " + challenge.getTitre() + " existe déjà", true);
-        }
-    }*/
-
-    public Object creer (@RequestBody Challenge challenge){
-
-        if (challenge == null) {
-            return Message.set("Challenge ne peut pas etre null", true);
-            // return an error message or a specific HTTP status code to indicate that the request body is missing
-        }
-        if (challenge.getTitre() == null || challenge.getTitre().isEmpty()) {
-            return Message.set("Titre est null", true);
-            // return an error message or a specific HTTP status code to indicate that the challenge title is missing
-        }
-
-        List<Utilisateurs> listutilisateurs = new ArrayList<>();
-        List<String> emails = new ArrayList<>();
-
-        listutilisateurs = utilisateurRepository.findAll();
-        if (!listutilisateurs.isEmpty()) {
-            for(Utilisateurs u : listutilisateurs){
-                emails.add(u.getEmail());
-            }
-        } else {
-            System.out.println("No users in the list.");
-        }
-        String mon = "DevsCiwara vient de créer la challenge " + challenge.getTitre() + " en savoir plus  https://chat.openai.com/auth/login";
-        System.out.println(mon);
-
-        // check if the emails list is not empty before calling the sendEmailToMultipleRecipients method
-       /* if (!emails.isEmpty()) {
-            envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon,emails);
-            return Message.set("Message non envoyé",true);
         }*/
-        this.challengeService.creer(challenge);
-        return Message.set("Challenge creer et utlisateurs avertis avec succees",true);
+        return challengeService.creer(challenge);
     }
+
 
 
     @ApiOperation(value = "Afficher techonologies")
@@ -94,12 +64,12 @@ public class ChallengeController {
         return challengeService.afficher();
     }
 
-    @ApiOperation(value = "Modifier technologies")
-    @PutMapping("/modifier/{Id}")
-    public Challenge Modifier(@PathVariable Long Id, Challenge challenge) {
-        return challengeService.modifier(Id, challenge);
-    }
 
+
+    @PutMapping("/{id}")
+    public Message updateCategory(@PathVariable Long id, @RequestBody Challenge challenge) {
+        return challengeService.modifier(id,challenge);
+    }
     @ApiOperation(value = "Supprimer Technologies")
     @DeleteMapping("/Supprimer/{Id}")
     public String Supprimer(@PathVariable Long Id) {

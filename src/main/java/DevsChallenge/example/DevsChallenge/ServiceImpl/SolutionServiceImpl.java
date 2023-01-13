@@ -1,11 +1,13 @@
-package DevsChallenge.example.DevsChallenge.Services;
+package DevsChallenge.example.DevsChallenge.ServiceImpl;
 
 import DevsChallenge.example.DevsChallenge.Messages.Message;
 
 import DevsChallenge.example.DevsChallenge.Models.Challenge;
 import DevsChallenge.example.DevsChallenge.Models.Solution;
+import DevsChallenge.example.DevsChallenge.Models.Team;
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 import DevsChallenge.example.DevsChallenge.Repositories.SolutionRepository;
+import DevsChallenge.example.DevsChallenge.Services.SolutionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +17,19 @@ import java.util.List;
 @Service
 public class SolutionServiceImpl implements SolutionService {
     private final SolutionRepository solutionRepository;
-    @Override
-    public Object creer(Solution solution, Utilisateurs utilisateurs, Challenge challenge) {
+   @Override
+    public Object creer(Solution solution, Utilisateurs utilisateurs, Challenge challenge, Team team) {
 
+        Boolean T= solutionRepository.existsByTeamAndChallenge(team,challenge);
         Boolean b = solutionRepository.existsByUtilisateursAndChallenge(utilisateurs, challenge);
         if(!b){
             return solutionRepository.save(solution) ;
-        } else
+        }
+        if (!T){
+            return solutionRepository.save(solution);
+        }
+
+        else
         {
 
             return Message.set(
@@ -31,6 +39,7 @@ public class SolutionServiceImpl implements SolutionService {
         }
 
     }
+
 
     @Override
     public List<Solution> afficher() {

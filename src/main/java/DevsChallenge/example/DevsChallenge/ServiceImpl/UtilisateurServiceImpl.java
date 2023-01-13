@@ -1,7 +1,8 @@
-package DevsChallenge.example.DevsChallenge.Services;
+package DevsChallenge.example.DevsChallenge.ServiceImpl;
 
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 import DevsChallenge.example.DevsChallenge.Repositories.UtilisateurRepository;
+import DevsChallenge.example.DevsChallenge.Services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -2,6 +2,7 @@ package DevsChallenge.example.DevsChallenge.Controllers;
 
 import DevsChallenge.example.DevsChallenge.Models.Challenge;
 import DevsChallenge.example.DevsChallenge.Models.Solution;
+import DevsChallenge.example.DevsChallenge.Models.Team;
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 import DevsChallenge.example.DevsChallenge.Services.SolutionService;
 import io.swagger.annotations.Api;
@@ -23,13 +24,19 @@ public class SolutionController {
     @Autowired
     SolutionService solutionService;
 
-    @ApiOperation(value = "Ajouter2 un pays")
-    @PostMapping("/ajout/{userdid}/{challengeid}")
-    public Object creer (@RequestBody Solution solution,@PathVariable("userdid") Utilisateurs userdid , @PathVariable("challengeid") Challenge challengeid  ){
+
+
+   @ApiOperation(value = "Ajouter2 un pays")
+    @PostMapping("/ajout/{userdid}/{challengeid}/{teamid}")
+    public Object creer (@RequestBody Solution solution,@PathVariable("userdid") Utilisateurs userdid , @PathVariable("challengeid") Challenge challengeid,@PathVariable("teamid") Team teamid   ){
         solution.setUtilisateurs(userdid);
         solution.setChallenge(challengeid);
-            return solutionService.creer(solution,userdid,challengeid);
+        solution.setTeam(teamid);
+            return solutionService.creer(solution,userdid,challengeid,teamid);
     }
+
+
+
 
     @ApiOperation(value = "Afficher techonologies")
     @GetMapping("/afficher")

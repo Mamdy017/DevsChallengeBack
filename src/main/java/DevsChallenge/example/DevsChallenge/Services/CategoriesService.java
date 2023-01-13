@@ -1,5 +1,6 @@
 package DevsChallenge.example.DevsChallenge.Services;
 
+import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Categories;
 
 
@@ -10,7 +11,7 @@ public interface CategoriesService {
 
     List<Categories> afficher();
 
-    Categories modifier(Long id, Categories categories);
+    Message modifier(Long id, Categories categories);
 
     String supprimer(Long id);
 }

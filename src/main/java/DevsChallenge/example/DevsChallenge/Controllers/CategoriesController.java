@@ -2,11 +2,14 @@ package DevsChallenge.example.DevsChallenge.Controllers;
 
 import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Categories;
+import DevsChallenge.example.DevsChallenge.Repositories.CategorieRepository;
 import DevsChallenge.example.DevsChallenge.Services.CategoriesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +24,10 @@ public class CategoriesController {
     @Autowired
     CategoriesService categoriesService;
 
+    @PutMapping("/{id}")
+    public Message updateCategory(@PathVariable Long id, @RequestBody Categories categories) {
+     return categoriesService.modifier(id,categories);
+    }
     @ApiOperation(value = "Ajouter2 un categories")
     @PostMapping("/ajout")
     public Object creer (@RequestBody Categories categories){
@@ -38,11 +45,8 @@ public class CategoriesController {
         return categoriesService.afficher();
     }
 
-    @ApiOperation(value = "Modifier technologies")
-    @PutMapping("/modifier/{Id}")
-    public Categories Modifier(@PathVariable Long Id, Categories categories) {
-        return categoriesService.modifier(Id, categories);
-    }
+
+
 
     @ApiOperation(value = "Supprimer Technologies")
     @DeleteMapping("/Supprimer/{Id}")
