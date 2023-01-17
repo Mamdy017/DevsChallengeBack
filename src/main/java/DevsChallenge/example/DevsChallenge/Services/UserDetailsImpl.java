@@ -2,6 +2,7 @@ package DevsChallenge.example.DevsChallenge.Services;
 
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Data
 public class UserDetailsImpl implements UserDetails {
 
     private static final long serialVersionUID = 1L;
@@ -20,18 +22,26 @@ public class UserDetailsImpl implements UserDetails {
 
 
     private String email;
+    private String nom;
+    private  String prenom;
+    private  String profile;
 
     @JsonIgnore
     private String password;
 
+
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String username, String email, String password,
+    public UserDetailsImpl(Long id, String username, String email, String password,String nom, String prenom,
+                           String profile,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.nom=nom;
+        this.prenom=prenom;
+        this.profile=profile;
         this.authorities = authorities;
     }
     public static UserDetailsImpl build(Utilisateurs user) {
@@ -44,6 +54,9 @@ public class UserDetailsImpl implements UserDetails {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
+                user.getNom(),
+                user.getPrenom(),
+                user.getProfile(),
                 authorities);
     }
     @Override

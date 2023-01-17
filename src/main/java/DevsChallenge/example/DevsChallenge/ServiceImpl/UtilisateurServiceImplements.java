@@ -1,5 +1,6 @@
 package DevsChallenge.example.DevsChallenge.ServiceImpl;
 
+import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 import DevsChallenge.example.DevsChallenge.Repositories.UtilisateurRepository;
 import DevsChallenge.example.DevsChallenge.Services.Utilisateurservice;
@@ -41,11 +42,14 @@ public class UtilisateurServiceImplements implements Utilisateurservice {
                     use.setNom(users.getNom());
                     use.setPrenom(users.getPrenom());
                     use.setProfile(users.getProfile());
+                    use.setMois(users.getMois());
                     use.setPassword(passwordEncoder.encode(users.getPassword()));
+                    System.out.println("####################################");
+                    System.out.println(use);
                     utilisateurRepository.save(use);
                     return "Modification reussie avec succès";
                 }
-        ).orElseThrow(() -> new RuntimeException("Cet utilisateur n'existe pas"));
+        ).orElseThrow(() -> new RuntimeException(String.valueOf(Message.set("Cet utilisateur n'existe pas",true))));
     }
 
     @Override

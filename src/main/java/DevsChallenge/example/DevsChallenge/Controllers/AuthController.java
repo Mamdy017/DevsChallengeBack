@@ -72,6 +72,9 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
+                userDetails.getNom(),
+                userDetails.getPrenom(),
+                userDetails.getProfile(),
                 roles));
     }
 
@@ -85,13 +88,13 @@ public class AuthController {
         if (utilisateurRepository.existsByUsername(inscription.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+                    .body(new MessageResponse("Error: Ce nom d'utilisateur existe déià!"));
         }
 
         if (utilisateurRepository.existsByEmail(inscription.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+                    .body(new MessageResponse("Error:Cet adress mail esxiste déjà!"));
         }
 
         // Create new user's account
@@ -121,8 +124,8 @@ public class AuthController {
                         roles.add(adminRole);
 
                         break;
-                    case "recruteur":
-                        Roles modRole = rolesRepository.findByName(Role.recruteur)
+                    case "adminuser":
+                        Roles modRole = rolesRepository.findByName(Role.adminuser)
                                 .orElseThrow(() -> new RuntimeException("Erreur: Cet role n'existe pas."));
                         roles.add(modRole);
 

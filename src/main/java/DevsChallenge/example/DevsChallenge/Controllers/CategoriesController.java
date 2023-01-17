@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -33,6 +35,7 @@ public class CategoriesController {
     public Object creer (@RequestBody Categories categories){
 
         try {
+            System.out.println(new Date());
             return categoriesService.creer(categories);
         } catch (Exception e) {
             return Message.set(" categories " + categories.getNom() + " existe déjà",  true);

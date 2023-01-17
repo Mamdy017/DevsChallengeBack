@@ -3,6 +3,7 @@ package DevsChallenge.example.DevsChallenge.Controllers;
 
 import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.TeamUtilisateurs;
+import DevsChallenge.example.DevsChallenge.Repositories.TeamRepository;
 import DevsChallenge.example.DevsChallenge.Services.TeamUtilisateursService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,10 +23,13 @@ public class TeamUtilisateurController {
     TeamUtilisateursService teamUtilisateursService;
 
 
-    @PostMapping("/ajout")
-    public Object creer (@RequestBody TeamUtilisateurs teamUtilisateurs){
+    @Autowired
+    TeamRepository teamRepository;
+    @PostMapping("/ajout/{teamid}")
+    public Object creer (@PathVariable("teamid") Long teamid,  @RequestBody TeamUtilisateurs teamUtilisateurs){
 
         try {
+            teamUtilisateurs.getTeam().add(teamRepository.findById(teamid).get());
             return teamUtilisateursService.creer(teamUtilisateurs);
         } catch (Exception e) {
             return Message.set(" ce utilisateurs  existe déjà",  true);

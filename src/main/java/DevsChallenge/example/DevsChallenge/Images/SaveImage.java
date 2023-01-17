@@ -12,14 +12,21 @@ public class SaveImage {
     public static String localhost = "http://127.0.0.1/";
     public static String serveruser = localhost + "DesCiwara/Images/";
     public static String userLocation = "C:/xampp/htdocs/DesCiwara/Images/";
+    public static String serverchallenge = localhost + "DesCiwara/challenge/";
+    public static String challengeLocation = "C:/xampp/htdocs/DesCiwara/challenge/";
 
-    public static String save(MultipartFile file, String fileName) {
+    public static String save(MultipartFile file, String fileName, String folderName) {
         String src = "";
         String server = "";
         String location = "";
 
-        location = userLocation;
-        server = serveruser;
+        if (folderName.equals("challenge")) {
+            location = challengeLocation;
+            server = serverchallenge;
+        } else {
+            location = userLocation;
+            server = serveruser;
+        }
 
         try {
             Path filePath = Paths.get(location + fileName);
@@ -40,4 +47,5 @@ public class SaveImage {
 
         return src;
     }
+
 }

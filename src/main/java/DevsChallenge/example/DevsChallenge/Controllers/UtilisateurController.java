@@ -2,6 +2,7 @@ package DevsChallenge.example.DevsChallenge.Controllers;
 
 import DevsChallenge.example.DevsChallenge.Images.Image;
 import DevsChallenge.example.DevsChallenge.Images.SaveImage;
+import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 import DevsChallenge.example.DevsChallenge.Services.Utilisateurservice;
 import io.swagger.annotations.Api;
@@ -43,7 +44,7 @@ public class UtilisateurController {
 
     }
     @PutMapping({"/modifier/{Id}"})
-    public String ModierUser(
+    public Object ModierUser(
             @PathVariable Long Id,
             @RequestParam String username,
             @RequestParam String email,
@@ -52,17 +53,21 @@ public class UtilisateurController {
             @RequestParam String nom,
             @RequestParam int mois,
             @Param("profile") MultipartFile profile) throws IOException {
-        String ProfileNom = username +".jpg";
+        String ProfileNom = username +profile.getOriginalFilename();
         Utilisateurs utilisateuramodifier = new Utilisateurs(username,email,nom,prenom,password,ProfileNom,mois);
         System.out.println(utilisateuramodifier);
         if (profile != null){
 
-            utilisateuramodifier.setProfile(SaveImage.save(profile,ProfileNom));
+            utilisateuramodifier.setProfile(SaveImage.save(profile,ProfileNom,"profile"));
             log.info("Utilisateur "+utilisateuramodifier.getUsername() + " modifié avec succès");
             System.out.println(utilisateuramodifier);
-            utilisateurservice.Modifier(Id, utilisateuramodifier);
+            this.utilisateurservice.Modifier(Id,utilisateuramodifier);
+
         }
-        return "Modification reussie avec succès";
+        else {
+            Message.set("Ajouter un fichier valide",false);
+        }
+        return Message.set("Utilisateur modifié avec succès",true);
     }
 
    /* @PutMapping("/modifier/{id}")

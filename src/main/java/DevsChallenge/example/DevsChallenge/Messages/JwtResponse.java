@@ -16,13 +16,19 @@ public class JwtResponse {
     private Long id;
     private String username;
     private String email;
+    private String nom;
+    private String prenom;
+    private String profile;
     private List<String> roles;
 
-    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles) {
+    public JwtResponse(String accessToken, Long id, String username, String email,String nom, String prenom, String profile,  List<String> roles) {
         this.token = accessToken;
         this.id = id;
         this.username = username;
         this.email = email;
+        this.nom=nom;
+        this.prenom=prenom;
+        this.profile=profile;
         this.roles = roles;
     }
     public JwtResponse(String accessToken,  String username, String email) {

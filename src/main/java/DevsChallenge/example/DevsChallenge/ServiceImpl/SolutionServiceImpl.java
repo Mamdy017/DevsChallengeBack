@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -49,8 +50,8 @@ public class SolutionServiceImpl implements SolutionService {
     public ResponseEntity<Object> creer(Solution solution, Utilisateurs utilisateurs, Challenge challenge, Team team) {
         Boolean T = solutionRepository.existsByTeamAndChallenge(team, challenge);
         Boolean b = solutionRepository.existsByUtilisateursAndChallenge(utilisateurs, challenge);
-        LocalDate today = LocalDate.now();
-        if (challenge.getDatefin().isBefore(today)) {
+        Date today = new Date();
+        if (challenge.getDatefin().before(today)) {
             return new ResponseEntity<>(Message.set("Le challenge est fermé, vous ne pouvez pas soumettre de solution", true), HttpStatus.OK);
         } else if (!b && !T) {
             return new ResponseEntity<>(solutionRepository.save(solution), HttpStatus.CREATED);

@@ -31,25 +31,26 @@ public class ChallengeServiceImpl implements ChallengeService {
     EnvoyeMailService envoyeMailService;
     @Override
     public Message creer(Challenge challenge) {
-
-        if(challenge.getDatefin().isAfter(challenge.getDatedebut()) && challenge.getDatedebut().isAfter(LocalDate.now())){
-            List<Utilisateurs> listutilisateurs = new ArrayList<>();
-            List<String> emails = new ArrayList<>();
-            listutilisateurs = utilisateurRepository.findAll();
-            for(Utilisateurs u : listutilisateurs){
-                emails.add(u.getEmail());
+        if(challengeRepository.findByTitre(challenge.getTitre()) == null) {
+            if(challenge.getDatefin().after(challenge.getDatedebut()) && challenge.getDatedebut().after(new Date())){
+                List<Utilisateurs> listutilisateurs = new ArrayList<>();
+                List<String> emails = new ArrayList<>();
+                listutilisateurs = utilisateurRepository.findAll();
+                for(Utilisateurs u : listutilisateurs){
+                    emails.add(u.getEmail());
+                }
+                String mon = "DevsCiwara vient de créer la challenge " + challenge.getTitre() + " en savoir plus https://chat.openai.com/auth/login"
+                        ;
+                //envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon,emails);
+                this.challengeRepository.save(challenge);
+                return Message.set("Challenge creer avec succès",true);
             }
-            String mon = "DevsCiwara vient de créer la challenge " + challenge.getTitre() + " en savoir plus  https://chat.openai.com/auth/login"
-                    ;
-            //envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon,emails);
-
-
-            this.challengeRepository.save(challenge);
-            return Message.set("Challenge creer avec succès",true);
-        }
-        else{
-           return Message.set("La date de fin ne doit être inferieur à la date de début et la date de début doit supperieur à " +
-                   "la date d'ajourd'hui ",false);
+            else{
+                return Message.set("La date de fin ne doit être inferieur à la date de début et la date de début doit supperieur à " +
+                        "la date d'ajourd'hui ",false);
+            }
+        } else {
+            return Message.set("Ce challenge existe déjà", false);
         }
 
     }
@@ -64,10 +65,10 @@ public class ChallengeServiceImpl implements ChallengeService {
         try {
             Challenge ch = challengeRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Challenge no trouvée"));
-            if (ch.getDatedebut().isBefore(LocalDate.now()))  {
+            if (ch.getDatedebut().before(new Date()))  {
                 return Message.set("Désolé, cette challenge ne peut pas être modifiée car la date de début est antérieure ou égale à la date du jour",false);
             }
-            ch.modifier(challenge.getTitre(), challenge.getCritere(),challenge.getDatedebut(),challenge.getDatefin());
+            ch.modifier(challenge.getTitre(), challenge.getCritere1(),challenge.getCritere2(),challenge.getCritere3(),challenge.getCritere4(),challenge.getDatedebut(),challenge.getDatefin(),challenge.getPhoto(),challenge.getDescription());
             challengeRepository.save(ch);
             System.out.println(new Date());
             return Message.set("Challenge Modifié",true);
