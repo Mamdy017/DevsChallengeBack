@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import DevsChallenge.example.DevsChallenge.Configsecurite.JwtUtils;
 import DevsChallenge.example.DevsChallenge.DTAO.Connexion;
 import DevsChallenge.example.DevsChallenge.DTAO.Inscription;
+import DevsChallenge.example.DevsChallenge.Messages.EmailConstructor;
 import DevsChallenge.example.DevsChallenge.Messages.JwtResponse;
 import DevsChallenge.example.DevsChallenge.Messages.MessageResponse;
 import DevsChallenge.example.DevsChallenge.Models.Role;
@@ -24,6 +25,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -52,6 +54,10 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Autowired
+    EmailConstructor emailConstructor;
+    @Autowired
+    JavaMailSender mailSender;
     @ApiOperation(value = "Connexion")
     @PostMapping("/connexion")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Connexion connexion) {
@@ -189,7 +195,8 @@ public class AuthController {
         user.setProfile("http://127.0.0.1/DesCiwara/Images/avatar.png");
         user.setMois(LocalDate.now().getMonthValue());
         utilisateurRepository.save(user);
-
+      //  mailSender.send(emailConstructor.constructNewUserEmail(user));
+        System.out.println(mailSender);
         return ResponseEntity.ok(new MessageResponse("Utilisateur enregistré avec succes!"));
     }
 

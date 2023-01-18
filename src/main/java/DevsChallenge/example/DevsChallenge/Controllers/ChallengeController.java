@@ -22,6 +22,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class ChallengeController {
             @Param("critere4") String critere4, @Param("description") String description,
             @Param("datedebut") Date datedebut, @Param("datefin") Date datefin,
             @Param("photo")MultipartFile photo
-            )throws IOException {
+            ) throws IOException, MessagingException {
 
         String photo2 = titre +photo.getOriginalFilename();
             Challenge challenge = new Challenge(titre,critere1,critere2,critere3,critere4,description,datedebut,datefin,photo2);

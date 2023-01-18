@@ -1,5 +1,6 @@
 package DevsChallenge.example.DevsChallenge.ServiceImpl;
 
+import DevsChallenge.example.DevsChallenge.Messages.EmailConstructor;
 import DevsChallenge.example.DevsChallenge.Messages.EnvoyeMailService;
 import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Challenge;
@@ -10,10 +11,15 @@ import DevsChallenge.example.DevsChallenge.Services.ChallengeService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import javax.mail.MessagingException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -28,20 +34,28 @@ public class ChallengeServiceImpl implements ChallengeService {
     UtilisateurRepository utilisateurRepository;
 
     @Autowired
+    JavaMailSender mailSender;
+
+    @Autowired
+    private TemplateEngine templateEngine;
+
+    @Autowired
     EnvoyeMailService envoyeMailService;
+
+    @Autowired
+    EmailConstructor emailConstructor;
     @Override
-    public Message creer(Challenge challenge) {
+    public Message creer(Challenge challenge) throws MessagingException {
         if(challengeRepository.findByTitre(challenge.getTitre()) == null) {
             if(challenge.getDatefin().after(challenge.getDatedebut()) && challenge.getDatedebut().after(new Date())){
                 List<Utilisateurs> listutilisateurs = new ArrayList<>();
-                List<String> emails = new ArrayList<>();
                 listutilisateurs = utilisateurRepository.findAll();
                 for(Utilisateurs u : listutilisateurs){
-                    emails.add(u.getEmail());
+                    String mon = "DevsCiwara vient de créer la challenge " + challenge.getTitre() + " en savoir plus https://chat.openai.com/auth/login";
+                    Context context = new Context();
+                    String text = templateEngine.process("newUserEmailTemplate",context);
+                    envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon, Arrays.asList(u.getEmail()),text);
                 }
-                String mon = "DevsCiwara vient de créer la challenge " + challenge.getTitre() + " en savoir plus https://chat.openai.com/auth/login"
-                        ;
-                //envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon,emails);
                 this.challengeRepository.save(challenge);
                 return Message.set("Challenge creer avec succès",true);
             }
@@ -52,8 +66,8 @@ public class ChallengeServiceImpl implements ChallengeService {
         } else {
             return Message.set("Ce challenge existe déjà", false);
         }
-
     }
+
 
     @Override
     public List<Challenge> afficher() {

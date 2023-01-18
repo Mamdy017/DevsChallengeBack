@@ -3,10 +3,11 @@ package DevsChallenge.example.DevsChallenge.Services;
 import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Challenge;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 public interface ChallengeService {
-    Message creer(Challenge challenge);
+    Message creer(Challenge challenge) throws MessagingException;
 
     List<Challenge> afficher();
 
