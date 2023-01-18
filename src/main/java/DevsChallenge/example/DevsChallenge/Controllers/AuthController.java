@@ -22,6 +22,7 @@ import DevsChallenge.example.DevsChallenge.Services.UserDetailsImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -77,6 +78,52 @@ public class AuthController {
                 userDetails.getProfile(),
                 roles));
     }
+
+
+
+
+
+
+
+
+    @PostMapping("/connexion2")
+    public ResponseEntity<JwtResponse> authenticateUseradmin(@Valid @RequestBody Connexion connexion) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(connexion.getUsernameOrEmail(), connexion.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> {
+                    return item.getAuthority();
+                })
+                .collect(Collectors.toList());
+
+        if (roles.contains("ROLE_ADMIN") || roles.contains("adminuser")) {
+            return ResponseEntity.ok(new JwtResponse(jwt,
+                    userDetails.getId(),
+                    userDetails.getUsername(),
+                    userDetails.getEmail(),
+                    userDetails.getNom(),
+                    userDetails.getPrenom(),
+                    userDetails.getProfile(),
+                    roles));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 

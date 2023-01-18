@@ -20,6 +20,6 @@ public interface RolesRepostory extends JpaRepository<Roles,Long> {
    @Modifying
    @Transactional
 
-    @Query(value="INSERT INTO `roles` ( `name`) VALUES ('ROLE_ADMIN'), ( 'ROLE_USER'), ( 'recruteur');",nativeQuery=true)
+    @Query(value="INSERT INTO `roles` ( `name`) VALUES ('ROLE_ADMIN'), ( 'ROLE_USER'), ( 'adminuser');",nativeQuery=true)
     void create();
 }
