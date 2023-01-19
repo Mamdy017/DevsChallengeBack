@@ -22,5 +22,11 @@ public interface Utilisateurservice {
     // LA METHODE PERMETTANT D'AFFICHER UN COLLABORATEUR
 
     Utilisateurs userParId(Long idusers);
+
+    public void resetPassword(Utilisateurs user);
+
+    public void updateUserPassword(Utilisateurs user, String newPassword);
+
+    Utilisateurs findByEmail(String userEmail);
 }
 

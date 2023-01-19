@@ -13,6 +13,7 @@ import DevsChallenge.example.DevsChallenge.DTAO.Connexion;
 import DevsChallenge.example.DevsChallenge.DTAO.Inscription;
 import DevsChallenge.example.DevsChallenge.Messages.EmailConstructor;
 import DevsChallenge.example.DevsChallenge.Messages.JwtResponse;
+import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Messages.MessageResponse;
 import DevsChallenge.example.DevsChallenge.Models.Role;
 import DevsChallenge.example.DevsChallenge.Models.Roles;
@@ -84,14 +85,6 @@ public class AuthController {
                 userDetails.getProfile(),
                 roles));
     }
-
-
-
-
-
-
-
-
     @PostMapping("/connexion2")
     public ResponseEntity<JwtResponse> authenticateUseradmin(@Valid @RequestBody Connexion connexion) {
         Authentication authentication = authenticationManager.authenticate(
@@ -123,16 +116,6 @@ public class AuthController {
 
 
 
-
-
-
-
-
-
-
-
-
-
     @ApiOperation(value = "Inscription")
     @PostMapping("/inscription")
     public ResponseEntity<?> registerUser(@Valid @RequestBody Inscription inscription) {
@@ -141,13 +124,13 @@ public class AuthController {
         if (utilisateurRepository.existsByUsername(inscription.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Ce nom d'utilisateur existe déià!"));
+                    .body(new Message("Error: Ce nom d'utilisateur existe déià!",false));
         }
 
         if (utilisateurRepository.existsByEmail(inscription.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error:Cet adress mail esxiste déjà!"));
+                    .body(new Message("Error:Cet adress mail esxiste déjà!",false));
         }
 
         // Create new user's account
@@ -165,7 +148,7 @@ public class AuthController {
 
         if (strRoles == null) {
             Roles userRole = rolesRepository.findByName(Role.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Erreur: Cet role n'existe pas."));
+                    .orElseThrow(() -> new RuntimeException(String.valueOf(Message.set("Erreur: Cet role n'existe pas",false))));
 
             roles.add(userRole);
         } else {
@@ -173,19 +156,19 @@ public class AuthController {
                 switch (role) {
                     case "admin":
                         Roles adminRole = rolesRepository.findByName(Role.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Erreur: Cet role n'existe pas."));
+                                .orElseThrow(() -> new RuntimeException(String.valueOf(Message.set("Erreur: Cet role n'existe pas",false))));
                         roles.add(adminRole);
 
                         break;
                     case "adminuser":
                         Roles modRole = rolesRepository.findByName(Role.adminuser)
-                                .orElseThrow(() -> new RuntimeException("Erreur: Cet role n'existe pas."));
+                                .orElseThrow(() -> new RuntimeException(String.valueOf(Message.set("Erreur: Cet role n'existe pas",false))));
                         roles.add(modRole);
 
                         break;
                     default:
                         Roles userRole = rolesRepository.findByName(Role.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Erreur: Cet role n'existe pas."));
+                                .orElseThrow(() -> new RuntimeException(String.valueOf(Message.set("Erreur: Cet role n'existe pas",false))));
                         roles.add(userRole);
                 }
             });
@@ -197,7 +180,7 @@ public class AuthController {
         utilisateurRepository.save(user);
       //  mailSender.send(emailConstructor.constructNewUserEmail(user));
         System.out.println(mailSender);
-        return ResponseEntity.ok(new MessageResponse("Utilisateur enregistré avec succes!"));
+        return ResponseEntity.ok(new Message("Utilisateur enregistré avec succes!",true));
     }
 
 }

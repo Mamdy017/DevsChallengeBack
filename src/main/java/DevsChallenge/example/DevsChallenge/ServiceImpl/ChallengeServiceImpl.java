@@ -4,6 +4,8 @@ import DevsChallenge.example.DevsChallenge.Messages.EmailConstructor;
 import DevsChallenge.example.DevsChallenge.Messages.EnvoyeMailService;
 import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Challenge;
+import DevsChallenge.example.DevsChallenge.Models.Role;
+import DevsChallenge.example.DevsChallenge.Models.Roles;
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 import DevsChallenge.example.DevsChallenge.Repositories.ChallengeRepository;
 import DevsChallenge.example.DevsChallenge.Repositories.UtilisateurRepository;
@@ -48,14 +50,33 @@ public class ChallengeServiceImpl implements ChallengeService {
     public Message creer(Challenge challenge) throws MessagingException {
         if(challengeRepository.findByTitre(challenge.getTitre()) == null) {
             if(challenge.getDatefin().after(challenge.getDatedebut()) && challenge.getDatedebut().after(new Date())){
+//                List<Utilisateurs> listutilisateurs = new ArrayList<>();
+//                listutilisateurs = utilisateurRepository.findAll();
+//                for(Utilisateurs u : listutilisateurs){
+//                    String mon = "DevsCiwara vient de créer la challenge " + challenge.getTitre() + " en savoir plus https://chat.openai.com/auth/login";
+//                    Context context = new Context();
+//                    String text = templateEngine.process("newUserEmailTemplate",context);
+//               //  envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon, Arrays.asList(u.getEmail()),text);
+//                }
                 List<Utilisateurs> listutilisateurs = new ArrayList<>();
                 listutilisateurs = utilisateurRepository.findAll();
                 for(Utilisateurs u : listutilisateurs){
-                    String mon = "DevsCiwara vient de créer la challenge " + challenge.getTitre() + " en savoir plus https://chat.openai.com/auth/login";
-                    Context context = new Context();
-                    String text = templateEngine.process("newUserEmailTemplate",context);
-                    envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon, Arrays.asList(u.getEmail()),text);
+                    boolean isAdmin = false;
+                    for (Roles r : u.getRoles()) {
+                        if(r.getName() == Role.ROLE_ADMIN || r.getName() == Role.adminuser) {
+                            isAdmin = true;
+                            break;
+                        }
+                    }
+                    if(!isAdmin){
+                        String mon = "DevsCiwara vient de créer la challenge " + challenge.getTitre() + " en savoir plus https://chat.openai.com/auth/login";
+                        Context context = new Context();
+                        String text = templateEngine.process("newUserEmailTemplate",context);
+                        envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon, Arrays.asList(u.getEmail()),text);
+                    }
                 }
+
+
                 this.challengeRepository.save(challenge);
                 return Message.set("Challenge creer avec succès",true);
             }

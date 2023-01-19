@@ -50,6 +50,40 @@ public class EmailConstructor {
         }
     }
 
+    public MimeMessagePreparator constructResetPasswordEmail(Utilisateurs user, String password) {
+        Context context = new Context();
+        context.setVariable("user", user);
+        context.setVariable("password", password);
+        String text = templateEngine.process("resetPasswordEmailTemplate", context);
+        MimeMessagePreparator messagePreparator = new MimeMessagePreparator() {
+            @Override
+            public void prepare(MimeMessage mimeMessage) throws Exception {
+                MimeMessageHelper email = new MimeMessageHelper(mimeMessage);
+                email.setPriority(1);
+                email.setTo(user.getEmail());
+                email.setSubject("New Password - Orchard");
+                email.setText(text, true);
+                email.setFrom(new InternetAddress(env.getProperty("support.email")));
+            }
+        };
+        return messagePreparator;
+    }
 
-
+    public MimeMessagePreparator constructUpdateUserProfileEmail(Utilisateurs user) {
+        Context context = new Context();
+        context.setVariable("user", user);
+        String text = templateEngine.process("updateUserProfileEmailTemplate", context);
+        MimeMessagePreparator messagePreparator = new MimeMessagePreparator() {
+            @Override
+            public void prepare(MimeMessage mimeMessage) throws Exception {
+                MimeMessageHelper email = new MimeMessageHelper(mimeMessage);
+                email.setPriority(1);
+                email.setTo(user.getEmail());
+                email.setSubject("Profile Update - Orchard");
+                email.setText(text, true);
+                email.setFrom(new InternetAddress(env.getProperty("support.email")));
+            }
+        };
+        return messagePreparator;
+    }
 }

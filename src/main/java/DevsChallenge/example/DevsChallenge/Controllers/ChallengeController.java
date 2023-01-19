@@ -1,21 +1,14 @@
 package DevsChallenge.example.DevsChallenge.Controllers;
-
 import DevsChallenge.example.DevsChallenge.Images.SaveImage;
 import DevsChallenge.example.DevsChallenge.Messages.EnvoyeMailService;
 import DevsChallenge.example.DevsChallenge.Messages.Message;
-
-import DevsChallenge.example.DevsChallenge.Models.Categories;
 import DevsChallenge.example.DevsChallenge.Models.Challenge;
-import DevsChallenge.example.DevsChallenge.Models.Technologies;
-import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
-
 import DevsChallenge.example.DevsChallenge.Repositories.CategorieRepository;
 import DevsChallenge.example.DevsChallenge.Repositories.TechnoRepository;
 import DevsChallenge.example.DevsChallenge.Repositories.UtilisateurRepository;
 import DevsChallenge.example.DevsChallenge.Services.ChallengeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.Data;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
