@@ -19,7 +19,6 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -103,7 +102,7 @@ public class ChallengeServiceImpl implements ChallengeService {
             if (ch.getDatedebut().before(new Date()))  {
                 return Message.set("Désolé, cette challenge ne peut pas être modifiée car la date de début est antérieure ou égale à la date du jour",false);
             }
-            ch.modifier(challenge.getTitre(), challenge.getCritere1(),challenge.getCritere2(),challenge.getCritere3(),challenge.getCritere4(),challenge.getDatedebut(),challenge.getDatefin(),challenge.getPhoto(),challenge.getDescription());
+            ch.modifier(challenge.getTitre(),challenge.getDatedebut(),challenge.getDatefin(),challenge.getPhoto(),challenge.getDescription());
             challengeRepository.save(ch);
             System.out.println(new Date());
             return Message.set("Challenge Modifié",true);

@@ -3,7 +3,6 @@ package DevsChallenge.example.DevsChallenge.Controllers;
 import DevsChallenge.example.DevsChallenge.Models.Challenge;
 import DevsChallenge.example.DevsChallenge.Models.Solution;
 import DevsChallenge.example.DevsChallenge.Models.Team;
-import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 import DevsChallenge.example.DevsChallenge.Services.SolutionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,12 +26,12 @@ public class SolutionController {
 
 
    @ApiOperation(value = "Ajouter2 un pays")
-    @PostMapping("/ajout/{userdid}/{challengeid}/{teamid}")
-    public Object creer (@RequestBody Solution solution,@PathVariable("userdid") Utilisateurs userdid , @PathVariable("challengeid") Challenge challengeid,@PathVariable("teamid") Team teamid   ){
-        solution.setUtilisateurs(userdid);
+    @PostMapping("/ajout/{challengeid}/{teamid}")
+    public Object creer (@RequestBody Solution solution, @PathVariable("challengeid") Challenge challengeid,@PathVariable("teamid") Team teamid   ){
+
         solution.setChallenge(challengeid);
         solution.setTeam(teamid);
-            return solutionService.creer(solution,userdid,challengeid,teamid);
+            return solutionService.creer(solution,challengeid,teamid);
     }
 
 

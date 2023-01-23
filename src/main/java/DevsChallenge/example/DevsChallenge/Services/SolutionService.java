@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface SolutionService {
 
-    Object creer(Solution solution, Utilisateurs utilisateurs, Challenge challenge, Team team);
+    Object creer(Solution solution,  Challenge challenge, Team team);
 
     List<Solution> afficher();
 

@@ -21,10 +21,9 @@ public class Categories {
     private Long id;
     @Size(max = 20)
     private String nom;
-    private String description;
 
-    public void modifier(String nom, String description) {
+    public void modifier(String nom) {
         this.nom = nom;
-        this.description = description;
+
     }
 }

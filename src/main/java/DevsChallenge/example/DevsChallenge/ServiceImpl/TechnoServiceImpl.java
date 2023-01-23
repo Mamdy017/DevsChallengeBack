@@ -30,7 +30,6 @@ public class TechnoServiceImpl implements TechnoService {
         return this.technoRepository.findById(id).map(
                 tec->{
                     tec.setNom(technologies.getNom());
-                    tec.setDescription(technologies.getDescription());
                     return technoRepository.save(tec);
                 }).orElseThrow(()-> new  RuntimeException("Technologies non trouvé"));
     }

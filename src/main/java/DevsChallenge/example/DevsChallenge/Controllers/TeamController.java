@@ -1,7 +1,6 @@
 package DevsChallenge.example.DevsChallenge.Controllers;
 
 import DevsChallenge.example.DevsChallenge.Messages.Message;
-import DevsChallenge.example.DevsChallenge.Models.Categories;
 import DevsChallenge.example.DevsChallenge.Models.Team;
 import DevsChallenge.example.DevsChallenge.Services.TeamService;
 import io.swagger.annotations.Api;

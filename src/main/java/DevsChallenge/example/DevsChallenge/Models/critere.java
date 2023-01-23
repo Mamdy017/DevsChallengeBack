@@ -14,18 +14,14 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @ToString
-public class TeamUtilisateurs {
+public class critere {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int type;
-    @ManyToOne
-    Utilisateurs utilisateurs;
-    @ManyToOne
-    Challenge challenge;
+    private String critere;
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(	name = "team_teamusers",
-            joinColumns = @JoinColumn(name = "teamusers_id"),
-            inverseJoinColumns = @JoinColumn(name = "team_id"))
-    private Set<Team> team = new HashSet<>();
+    @JoinTable(	name = "critere_bareme",
+            joinColumns = @JoinColumn(name = "critere_id"),
+            inverseJoinColumns = @JoinColumn(name = "bareme_id"))
+    private Set<bareme> bareme = new HashSet<>();
 }

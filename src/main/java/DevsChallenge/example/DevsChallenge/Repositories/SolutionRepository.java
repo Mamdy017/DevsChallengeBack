@@ -13,7 +13,7 @@ import java.util.List;
 public interface SolutionRepository extends JpaRepository<Solution,Long> {
 
     //List<Solution> findByUserIdAndChallengeId(Long userId, Long challengeId);
-    Boolean existsByUtilisateursAndChallenge(Utilisateurs utilisateurs, Challenge challenge);
+
     Boolean existsByTeamAndChallenge(Team team,Challenge challenge);
 
 }

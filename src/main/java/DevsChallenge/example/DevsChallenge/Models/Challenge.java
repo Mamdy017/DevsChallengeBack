@@ -5,11 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Data
@@ -23,44 +24,48 @@ public class Challenge {
     private Long id;
     @Size(max = 20)
     private String titre;
-    private String critere1;
-    private String critere2;
-    private String critere3;
-    private String critere4;
     private String description;
 
     private Date datedebut;
     private Date datefin;
     private String photo;
-    @ManyToOne
-    Categories categories;
-    @ManyToOne
-    Technologies technologies;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "challenge_critere",
+            joinColumns = @JoinColumn(name = "challenge_id"),
+            inverseJoinColumns = @JoinColumn(name = "critere_id"))
+    private Set<critere> critere = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "tecno_challenge",
+            joinColumns = @JoinColumn(name = "challenge_id"),
+            inverseJoinColumns = @JoinColumn(name = "techno_id"))
+    private Set<Technologies> techno = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "cate_challenge",
+            joinColumns = @JoinColumn(name = "challenge_id"),
+            inverseJoinColumns = @JoinColumn(name = "cate_id"))
+    private Set<Categories> cate = new HashSet<>();
 
     public Challenge(Long challengeid) {
         this.id=challengeid;
     }
 
-    public Challenge(String titre, String critere1, String critere2, String critere3, String critere4, String description, Date datedebut, Date datefin, String photo) {
+    public Challenge(String titre,  String description, Date datedebut, Date datefin, String photo) {
         this.titre = titre;
-        this.critere1 = critere1;
-        this.critere2=critere2;
-        this.critere3=critere3;
-        this.critere4=critere4;
         this.datedebut=datedebut;
         this.datefin=datefin;
         this.description=description;
         this.photo=photo;
     }
 
+    public Challenge(String titre, String description, Date datedebut, Date datefin, String photo2, Long[] critereids, Long[] cateids, Long[] tecnhoids) {
+    }
 
-    public void modifier(String titre, String critere1,String critere2,String critere3,String critere4, Date datedebut,Date datefin,String photo,String description) {
+
+    public void modifier(String titre,  Date datedebut,Date datefin,String photo,String description) {
         this.titre = titre;
-        this.critere1 = critere1;
-        this.critere2=critere2;
-        this.critere3=critere3;
-        this.critere4=critere4;
+
         this.datedebut=datedebut;
         this.datefin=datefin;
         this.photo=photo;

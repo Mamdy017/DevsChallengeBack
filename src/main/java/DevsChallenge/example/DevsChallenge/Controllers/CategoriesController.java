@@ -2,17 +2,13 @@ package DevsChallenge.example.DevsChallenge.Controllers;
 
 import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Categories;
-import DevsChallenge.example.DevsChallenge.Repositories.CategorieRepository;
 import DevsChallenge.example.DevsChallenge.Services.CategoriesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +31,6 @@ public class CategoriesController {
     public Object creer (@RequestBody Categories categories){
 
         try {
-            System.out.println(new Date());
             return categoriesService.creer(categories);
         } catch (Exception e) {
             return Message.set(" categories " + categories.getNom() + " existe déjà",  true);

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 
@@ -34,7 +33,7 @@ public class CategorieServiceImpl implements CategoriesService {
         try {
             Categories category = categorieRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Category not found"));
-            category.modifier(categories.getNom(), categories.getDescription());
+            category.modifier(categories.getNom());
             categorieRepository.save(category);
             System.out.println(LocalDate.now());
             return Message.set("ajout effectue",true);

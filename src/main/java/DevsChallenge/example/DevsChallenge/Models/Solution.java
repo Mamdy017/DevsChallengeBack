@@ -24,8 +24,6 @@ public class Solution {
     @Size(max=7)
     private String  point;
     @ManyToOne
-    Utilisateurs utilisateurs;
-    @ManyToOne
     Challenge challenge;
     @ManyToOne
     Team team;
