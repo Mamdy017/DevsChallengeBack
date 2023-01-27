@@ -2,13 +2,17 @@ package DevsChallenge.example.DevsChallenge.Controllers;
 
 
 import DevsChallenge.example.DevsChallenge.Messages.Message;
+import DevsChallenge.example.DevsChallenge.Models.Technologies;
 import DevsChallenge.example.DevsChallenge.Models.critere;
 import DevsChallenge.example.DevsChallenge.Repositories.baremeRepository;
 import DevsChallenge.example.DevsChallenge.Services.critereService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Api(value = "devsCiwara", description = "azertyuio")
@@ -32,6 +36,11 @@ baremeRepository baremeRepository1;
     }
     }
 
+    @ApiOperation(value = "Afficher critere")
+    @GetMapping("/afficher")
+    public List<critere> list(){
+        return critereService1.afficher();
+    }
 
 
 

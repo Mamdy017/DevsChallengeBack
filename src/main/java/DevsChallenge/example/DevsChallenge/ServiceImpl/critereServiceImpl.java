@@ -22,7 +22,7 @@ public class critereServiceImpl implements critereService {
     }
     @Override
     public List<critere> afficher() {
-        return null;
+        return critereRepository1.findAll();
     }
 
     @Override

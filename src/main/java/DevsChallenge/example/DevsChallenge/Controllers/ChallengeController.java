@@ -50,11 +50,11 @@ public class ChallengeController {
     @Autowired
     critereRepository critereRepository1;
     @ApiOperation(value = "Ajouter2 un challenge")
-    @PostMapping("/ajout/")
+    @PostMapping("/ajout")
     public Object creer (
-            @RequestParam("critereids") Long[] critereids,
-            @RequestParam("tecnhoids") Long[] tecnhoids,
-            @RequestParam("cateids") Long[] cateids,
+            @Param("critereids") Long[] critereids,
+            @Param("tecnhoids") Long[] tecnhoids,
+            @Param("cateids") Long[] cateids,
             @Param("titre") String titre,
             @Param("description") String description,
             @Param("datedebut") Date datedebut, @Param("datefin") Date datefin,
