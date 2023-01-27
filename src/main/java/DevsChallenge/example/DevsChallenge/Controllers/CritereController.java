@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,11 +27,12 @@ public class CritereController {
 
     @Autowired
 baremeRepository baremeRepository1;
-    @PostMapping("/ajout") public Object creer (@RequestParam("baremeids") Long[] baremeids, @RequestBody critere critere1){    try {
+    @PostMapping("/ajout") public Object creer(@Param("baremeids") Long[] baremeids, @Param("criteres") String criteres){    try {
+        critere Critere = new critere(criteres);
         for (Long baremeid : baremeids) {
-            critere1.getBareme().add(baremeRepository1.findById(baremeid).get());
+            Critere.getBareme().add(baremeRepository1.findById(baremeid).get());
         }
-        return critereService1.creer(critere1);
+        return critereService1.creer(Critere);
     } catch (Exception e) {
         return Message.set(" ce critère  existe déjà",  true);
     }

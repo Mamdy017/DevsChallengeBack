@@ -22,6 +22,10 @@ public class Categories {
     @Size(max = 20)
     private String nom;
 
+    public Categories(String cate) {
+        this.nom=cate;
+    }
+
     public void modifier(String nom) {
         this.nom = nom;
 

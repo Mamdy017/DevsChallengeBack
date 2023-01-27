@@ -19,5 +19,11 @@ public class bareme {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int bareme;
+    private String bareme;
+
+    public bareme(String bareme) {
+        this.bareme=bareme;
+    }
+
+
 }

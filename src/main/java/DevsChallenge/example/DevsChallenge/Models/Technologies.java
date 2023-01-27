@@ -25,4 +25,7 @@ public class Technologies {
     @Size(max = 20)
     private String nom;
 
+    public Technologies(String techno) {
+        this.nom=techno;
+    }
 }

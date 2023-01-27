@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +25,8 @@ public class TechnologiesController {
 
     @ApiOperation(value = "Ajouter2 un pays")
     @PostMapping("/ajout")
-    public Object creer (@RequestBody Technologies technologies){
-
+    public Object creer (@Param("techno") String techno){
+        Technologies technologies= new Technologies(techno);
         try {
             return technoService.creer(technologies);
         } catch (Exception e) {

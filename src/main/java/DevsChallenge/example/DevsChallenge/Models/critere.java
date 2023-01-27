@@ -24,4 +24,8 @@ public class critere {
             joinColumns = @JoinColumn(name = "critere_id"),
             inverseJoinColumns = @JoinColumn(name = "bareme_id"))
     private Set<bareme> bareme = new HashSet<>();
+
+    public critere(String criteres) {
+        this.critere= criteres;
+    }
 }

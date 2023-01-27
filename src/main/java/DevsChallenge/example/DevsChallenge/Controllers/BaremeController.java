@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,12 +25,12 @@ public class BaremeController {
 
     @ApiOperation(value = "Ajouter2 un categories")
     @PostMapping("/ajout")
-    public Object creer (@RequestBody bareme bareme1){
-
+    public Object creer (@Param("bareme") String bareme){
+        bareme Bareme = new bareme(bareme);
         try {
-            return baremeService1.creer(bareme1);
+            return baremeService1.creer(Bareme);
         } catch (Exception e) {
-            return Message.set(" categories " + bareme1.getBareme() + " existe déjà",  true);
+            return Message.set(" categories " + Bareme.getBareme() + " existe déjà",  true);
         }
     }
 
