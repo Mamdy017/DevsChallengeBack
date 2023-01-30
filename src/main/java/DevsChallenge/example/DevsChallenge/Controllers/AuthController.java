@@ -176,6 +176,15 @@ public class AuthController {
         user.setRoles(roles);
         user.setProfile("http://127.0.0.1/DesCiwara/Images/avatar.png");
         user.setMois(LocalDate.now().getMonthValue());
+        if (strRoles != null && strRoles.contains("adminuser")) {
+            String password = String.valueOf(inscription.getPrenom().charAt(0)) + String.valueOf(inscription.getNom().charAt(0)) + inscription.getNom();
+            user.setPassword(encoder.encode(inscription.getPassword().toLowerCase()));
+            System.out.println(password);
+        } else {
+            user.setPassword(encoder.encode(inscription.getPassword()));
+        }
+
+
         utilisateurRepository.save(user);
       //  mailSender.send(emailConstructor.constructNewUserEmail(user));
         System.out.println(mailSender);

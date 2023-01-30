@@ -3,10 +3,7 @@ package DevsChallenge.example.DevsChallenge.ServiceImpl;
 import DevsChallenge.example.DevsChallenge.Messages.EmailConstructor;
 import DevsChallenge.example.DevsChallenge.Messages.EnvoyeMailService;
 import DevsChallenge.example.DevsChallenge.Messages.Message;
-import DevsChallenge.example.DevsChallenge.Models.Challenge;
-import DevsChallenge.example.DevsChallenge.Models.Role;
-import DevsChallenge.example.DevsChallenge.Models.Roles;
-import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
+import DevsChallenge.example.DevsChallenge.Models.*;
 import DevsChallenge.example.DevsChallenge.Repositories.ChallengeRepository;
 import DevsChallenge.example.DevsChallenge.Repositories.UtilisateurRepository;
 import DevsChallenge.example.DevsChallenge.Services.ChallengeService;
@@ -19,10 +16,9 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -45,6 +41,10 @@ public class ChallengeServiceImpl implements ChallengeService {
 
     @Autowired
     EmailConstructor emailConstructor;
+
+    @Autowired
+    private EntityManager entityManager;
+
     @Override
     public Message creer(Challenge challenge) throws MessagingException {
         if(challengeRepository.findByTitre(challenge.getTitre()) == null) {
@@ -89,12 +89,41 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
 
+
+    @Transactional
+    public Set<critere> getCriteriaByChallengeId(Long challengeId) {
+        Challenge challenge = entityManager.find(Challenge.class, challengeId);
+        return challenge.getCritere();
+    }
+
+
+
+
+
     @Override
     public List<Challenge> afficher() {
         return challengeRepository.findAll();
     }
+/*    public Message modifier(Long id, Challenge challenge) {
+        try {
+            Challenge ch = challengeRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Challenge not found"));
+            if (ch.getDatedebut().before(new Date())) {
+                return Message.set("Sorry, this challenge can't be modified as the start date is before or equal to the current date", false);
+            }
+            ch.modifier(challenge.getTitre(), challenge.getDatedebut(), challenge.getDatefin(), challenge.getPhoto(), challenge.getDescription());
+            challengeRepository.save(ch);
+            return Message.set("Challenge Modified", true);
+        } catch (RuntimeException e) {
+            return Message.set("An error occurred", false);
+        }
+    }*/
 
-    @Override
+
+
+
+
+/*    @Override
     public Message modifier(Long id, Challenge challenge) {
         try {
             Challenge ch = challengeRepository.findById(id)
@@ -109,7 +138,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         } catch (RuntimeException e) {
             return Message.set("une erreur s'est produite",false);
         }
-    }
+    }*/
 
 
     @Override
@@ -118,8 +147,55 @@ public class ChallengeServiceImpl implements ChallengeService {
         return "Challenge supprime avec succes";
     }
 
+
     @Override
     public Challenge ChallengeParId(Long id) {
         return challengeRepository.findById(id).get();
     }
+
+
+
+/*
+    public Message modifier(Long id, Challenge challenge) {
+        Challenge challenge1 = challengeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Challenge not found"));
+
+        challenge1.setTitre(challenge.getTitre());
+        challenge1.setDescription(challenge.getDescription());
+        challenge1.setDatedebut(challenge.getDatedebut());
+        challenge1.setDatefin(challenge.getDatefin());
+        challenge1.setPhoto(challenge.getPhoto());
+
+        challenge1.getCritere().clear();
+        challenge1.getCate().clear();
+        challenge1.getTechno().clear();
+
+        challenge1.getCritere().addAll(challenge.getCritere());
+        challenge1.getCate().addAll(challenge.getCate());
+        challenge1.getTechno().addAll(challenge.getTechno());
+
+        challengeRepository.save(challenge1);
+
+        return Message.set("Challenge modified", true);
+    }*/
+
+    @Override
+    public Message modifier(Long id, Challenge challenge) {
+        Challenge challenge1 = challengeRepository.findById(id).orElse(null);
+        if (challenge1 == null) {
+            return Message.set("erreer",false);
+        }
+        challenge1.setTitre(challenge.getTitre());
+        challenge1.setDescription(challenge.getDescription());
+        challenge1.setDatedebut(challenge.getDatedebut());
+        challenge1.setDatefin(challenge.getDatefin());
+        challenge1.setPhoto(challenge.getPhoto());
+        challenge1.setCritere(challenge.getCritere());
+        challenge1.setTechno(challenge.getTechno());
+        challenge1.setCate(challenge.getCate());
+
+        challengeRepository.save(challenge1);
+        return Message.set("Bon travail", true);
+    }
 }
+
