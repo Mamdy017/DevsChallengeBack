@@ -1,12 +1,15 @@
 package DevsChallenge.example.DevsChallenge.Controllers;
 
 import DevsChallenge.example.DevsChallenge.Messages.Message;
+import DevsChallenge.example.DevsChallenge.Models.Challenge;
 import DevsChallenge.example.DevsChallenge.Models.Team;
+import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 import DevsChallenge.example.DevsChallenge.Services.TeamService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,5 +53,10 @@ public class TeamController {
         return teamService.supprimer(Id);
     }
 
+    @PostMapping("/teams")
+    public ResponseEntity<Team> createTeam(@RequestParam String teamName, @RequestParam Utilisateurs creator, @RequestParam Challenge challenge) {
+        Team createdTeam = teamService.createTeamAndAddCreator(teamName, creator, challenge);
+        return ResponseEntity.ok(createdTeam);
+    }
 
 }

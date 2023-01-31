@@ -1,8 +1,12 @@
 package DevsChallenge.example.DevsChallenge.ServiceImpl;
 
 import DevsChallenge.example.DevsChallenge.Messages.Message;
+import DevsChallenge.example.DevsChallenge.Models.Challenge;
 import DevsChallenge.example.DevsChallenge.Models.Team;
+import DevsChallenge.example.DevsChallenge.Models.TeamUtilisateurs;
+import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 import DevsChallenge.example.DevsChallenge.Repositories.TeamRepository;
+import DevsChallenge.example.DevsChallenge.Repositories.TeamUtilisateurRepository;
 import DevsChallenge.example.DevsChallenge.Services.TeamService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,8 @@ import java.util.List;
 @Service
 public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
+
+   private final TeamUtilisateurRepository teamUtilisateurRepository;
     @Override
     public Team creer(Team team) {
         return teamRepository.save(team);
@@ -35,6 +41,22 @@ public class TeamServiceImpl implements TeamService {
     public Object supprimer(Long id) {
         this.teamRepository.deleteById(id);
         return Message.set("Team supprimé avc succès",true);
+    }
+
+    public Team createTeamAndAddCreator(String teamName, Utilisateurs creator, Challenge challenge) {
+        Team team = new Team();
+        team.setNom(teamName);
+
+        TeamUtilisateurs teamUtilisateurs = new TeamUtilisateurs();
+        teamUtilisateurs.setUtilisateurs(creator);
+        teamUtilisateurs.setChallenge(challenge);
+        teamUtilisateurs.setType(1);
+        teamUtilisateurs.getTeam().add(team);
+
+        teamRepository.save(team);
+        teamUtilisateurRepository.save(teamUtilisateurs);
+
+        return team;
     }
 
     @Override

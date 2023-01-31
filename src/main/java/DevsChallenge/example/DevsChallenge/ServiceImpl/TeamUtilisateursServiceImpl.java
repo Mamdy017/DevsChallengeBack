@@ -19,6 +19,8 @@ public class TeamUtilisateursServiceImpl implements TeamUtilisateursService {
         return Message.set("Demande d'ajoout au team envoyée avec succès",true);
     }
 
+
+
     @Override
     public List<TeamUtilisateurs> afficher() {
         return teamUtilisateurRepository.findAll();

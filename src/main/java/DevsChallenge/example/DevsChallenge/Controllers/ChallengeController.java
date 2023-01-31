@@ -176,7 +176,7 @@ public Message modifyChallenge(
         return Message.set("Challenge not found", false);
     }
     if (challenge.getDatedebut().before(new Date())) {
-        return Message.set("Sorry, this challenge cannot be modified as the start date is earlier or equal to the current date", false);
+        return Message.set("Desolé cet challenge ne peut pas être modifié", false);
     }
     challenge.setTitre(titre);
     challenge.setDescription(description);

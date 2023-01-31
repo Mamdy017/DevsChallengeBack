@@ -1,7 +1,9 @@
 package DevsChallenge.example.DevsChallenge.Services;
 
+import DevsChallenge.example.DevsChallenge.Models.Challenge;
 import DevsChallenge.example.DevsChallenge.Models.Team;
 import DevsChallenge.example.DevsChallenge.Models.Technologies;
+import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 
 import java.util.List;
 
@@ -15,4 +17,6 @@ public interface TeamService {
     Object supprimer(Long id);
 
     Team trouverTeamParId(Long id);
+
+    Team createTeamAndAddCreator(String teamName, Utilisateurs creator, Challenge challenge);
 }
