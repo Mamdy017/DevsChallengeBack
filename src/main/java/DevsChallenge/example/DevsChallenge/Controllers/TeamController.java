@@ -4,7 +4,9 @@ import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Challenge;
 import DevsChallenge.example.DevsChallenge.Models.Team;
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
+import DevsChallenge.example.DevsChallenge.Services.ChallengeService;
 import DevsChallenge.example.DevsChallenge.Services.TeamService;
+import DevsChallenge.example.DevsChallenge.Services.Utilisateurservice;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
@@ -22,6 +24,11 @@ import java.util.List;
 public class TeamController {
     @Autowired
     TeamService teamService;
+    @Autowired
+    Utilisateurservice utilisateurservice;
+
+    @Autowired
+    ChallengeService challengeService;
     @ApiOperation(value = "Ajouter2 un pays")
     @PostMapping("/ajout")
     public Object creer (@RequestBody Team team){
@@ -53,10 +60,13 @@ public class TeamController {
         return teamService.supprimer(Id);
     }
 
-    @PostMapping("/teams")
-    public ResponseEntity<Team> createTeam(@RequestParam String teamName, @RequestParam Utilisateurs creator, @RequestParam Challenge challenge) {
-        Team createdTeam = teamService.createTeamAndAddCreator(teamName, creator, challenge);
-        return ResponseEntity.ok(createdTeam);
+    @PostMapping("/teams/{creatorId}/{challengeId}")
+    public Message createTeam(@RequestBody Team team, @PathVariable Long creatorId, @PathVariable Long challengeId) {
+        Utilisateurs creator = utilisateurservice.userParId(creatorId);
+        Challenge challenge = challengeService.ChallengeParId(challengeId);
+        return this.teamService.createTeamAndAddCreator(team.getNom(), creator, challenge);
     }
+
+
 
 }

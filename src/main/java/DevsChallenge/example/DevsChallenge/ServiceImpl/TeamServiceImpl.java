@@ -11,6 +11,7 @@ import DevsChallenge.example.DevsChallenge.Services.TeamService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -43,21 +44,32 @@ public class TeamServiceImpl implements TeamService {
         return Message.set("Team supprimé avc succès",true);
     }
 
-    public Team createTeamAndAddCreator(String teamName, Utilisateurs creator, Challenge challenge) {
+    public Message createTeamAndAddCreator(String teamName, Utilisateurs creator, Challenge challenge) {
+        Team existingTeam = teamRepository.findByNom(teamName);
+        if (existingTeam != null) {
+            return Message.set("Une équipe avec ce nom existe déjà pour ce challenge", false);
+        }
+
+        Date dateFin = challenge.getDatefin();
+
+        if (dateFin != null && dateFin.before(new Date())) {
+            return Message.set("Le challenge est déjà terminé", false);
+        }
+
         Team team = new Team();
         team.setNom(teamName);
-
         TeamUtilisateurs teamUtilisateurs = new TeamUtilisateurs();
         teamUtilisateurs.setUtilisateurs(creator);
         teamUtilisateurs.setChallenge(challenge);
         teamUtilisateurs.setType(1);
         teamUtilisateurs.getTeam().add(team);
-
         teamRepository.save(team);
         teamUtilisateurRepository.save(teamUtilisateurs);
 
-        return team;
+        return Message.set("Equipe créer avec succès", true);
     }
+
+
 
     @Override
     public Team trouverTeamParId(Long id) {

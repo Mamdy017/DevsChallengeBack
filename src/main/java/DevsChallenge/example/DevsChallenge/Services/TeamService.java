@@ -1,5 +1,6 @@
 package DevsChallenge.example.DevsChallenge.Services;
 
+import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Challenge;
 import DevsChallenge.example.DevsChallenge.Models.Team;
 import DevsChallenge.example.DevsChallenge.Models.Technologies;
@@ -18,5 +19,5 @@ public interface TeamService {
 
     Team trouverTeamParId(Long id);
 
-    Team createTeamAndAddCreator(String teamName, Utilisateurs creator, Challenge challenge);
+    Message createTeamAndAddCreator(String teamName, Utilisateurs creator, Challenge challenge);
 }
