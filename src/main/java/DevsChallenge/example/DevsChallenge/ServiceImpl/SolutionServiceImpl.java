@@ -52,7 +52,13 @@ public class SolutionServiceImpl implements SolutionService {
         if (challenge.getDatefin().before(today)) {
             return new ResponseEntity<>(Message.set("Le challenge est fermé, vous ne pouvez pas soumettre de solution", true), HttpStatus.OK);
         } else if (!T) {
-            return new ResponseEntity<>(solutionRepository.save(solution), HttpStatus.CREATED);
+            if (solution.getLienGithub().isEmpty() && solution.getSource().isEmpty()) {
+                return new ResponseEntity<>(Message.set("Veuillez ajouter un lien Github ou une source", true), HttpStatus.OK);
+            } else if (!solution.getLienGithub().isEmpty() && !solution.getSource().isEmpty()) {
+                return new ResponseEntity<>(Message.set("Veuillez n'ajouter qu'un lien Github ou une source", true), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(solutionRepository.save(solution), HttpStatus.CREATED);
+            }
         } else {
             return new ResponseEntity<>(Message.set("Vous avez déjà ajouté une solution", true), HttpStatus.OK);
         }

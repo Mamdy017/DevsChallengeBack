@@ -18,17 +18,11 @@ import java.util.List;
 @RestController
 @ToString
 public class SolutionController {
-
-
     @Autowired
     SolutionService solutionService;
-
-
-
-   @ApiOperation(value = "Ajouter2 un pays")
+   @ApiOperation(value = "Ajouter2 un une solution")
     @PostMapping("/ajout/{challengeid}/{teamid}")
     public Object creer (@RequestBody Solution solution, @PathVariable("challengeid") Challenge challengeid,@PathVariable("teamid") Team teamid   ){
-
         solution.setChallenge(challengeid);
         solution.setTeam(teamid);
             return solutionService.creer(solution,challengeid,teamid);
