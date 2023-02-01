@@ -18,7 +18,6 @@ public class Solution {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Size(max=20)
-    private String nom;
     private String lienGithub;
     private String source;
     @Size(max=7)
@@ -27,4 +26,10 @@ public class Solution {
     Challenge challenge;
     @ManyToOne
     Team team;
+
+    public Solution(String lienGithub, String point, String photo2) {
+        this.lienGithub=lienGithub;
+        this.point=point;
+        this.source=photo2;
+    }
 }

@@ -2,12 +2,12 @@ package DevsChallenge.example.DevsChallenge.ServiceImpl;
 
 import DevsChallenge.example.DevsChallenge.Messages.Message;
 
-import DevsChallenge.example.DevsChallenge.Models.Challenge;
-import DevsChallenge.example.DevsChallenge.Models.Solution;
-import DevsChallenge.example.DevsChallenge.Models.Team;
+import DevsChallenge.example.DevsChallenge.Models.*;
 import DevsChallenge.example.DevsChallenge.Repositories.SolutionRepository;
+import DevsChallenge.example.DevsChallenge.Repositories.TeamUtilisateurRepository;
 import DevsChallenge.example.DevsChallenge.Services.SolutionService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,6 +19,7 @@ import java.util.List;
 @Service
 public class SolutionServiceImpl implements SolutionService {
     private final SolutionRepository solutionRepository;
+private final TeamUtilisateurRepository teamUtilisateurRepository;
    /*@Override
     public Object creer(Solution solution, Utilisateurs utilisateurs, Challenge challenge, Team team) {
 
@@ -45,9 +46,9 @@ public class SolutionServiceImpl implements SolutionService {
 
 
     @Override
-    public ResponseEntity<Object> creer(Solution solution, Challenge challenge, Team team) {
+    public ResponseEntity<Object> creer(Solution solution, Challenge challenge, Team team, Utilisateurs utilisateurs) {
         Boolean T = solutionRepository.existsByTeamAndChallenge(team, challenge);
-
+        TeamUtilisateurs teamUtilisateurs = teamUtilisateurRepository.findByTeamAndUtilisateurs(team, utilisateurs);
         Date today = new Date();
         if (challenge.getDatefin().before(today)) {
             return new ResponseEntity<>(Message.set("Le challenge est fermé, vous ne pouvez pas soumettre de solution", true), HttpStatus.OK);
@@ -56,6 +57,8 @@ public class SolutionServiceImpl implements SolutionService {
                 return new ResponseEntity<>(Message.set("Veuillez ajouter un lien Github ou une source", true), HttpStatus.OK);
             } else if (!solution.getLienGithub().isEmpty() && !solution.getSource().isEmpty()) {
                 return new ResponseEntity<>(Message.set("Veuillez n'ajouter qu'un lien Github ou une source", true), HttpStatus.OK);
+            }else if (teamUtilisateurs.getType() != 1) {
+                return new ResponseEntity<>(Message.set("Vous n'êtes pas autorisé à soumettre une solution", true), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(solutionRepository.save(solution), HttpStatus.CREATED);
             }
@@ -72,7 +75,7 @@ public class SolutionServiceImpl implements SolutionService {
     @Override
     public Solution modifier(Long id, Solution solution) {
         return solutionRepository.findById(id).map( s ->{
-            s.setNom(solution.getNom());
+
             s.setSource(solution.getSource());
             s.setPoint(solution.getPoint());
             s.setLienGithub(solution.getLienGithub());
