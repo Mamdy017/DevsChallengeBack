@@ -18,7 +18,7 @@ public class critereServiceImpl implements critereService {
     @Override
     public Message creer(critere critere1) {
         this.critereRepository1.save(critere1);
-        return Message.set("Demande d'ajoout au team envoyée avec succès",true);
+        return Message.set("Critère ajouter avec succès",true);
     }
     @Override
     public List<critere> afficher() {

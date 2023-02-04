@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-
+import java.util.List;
 
 
 @Data
@@ -19,5 +19,9 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
+/*
+    @ManyToOne
+    Challenge challenge;
+*/
 
 }
