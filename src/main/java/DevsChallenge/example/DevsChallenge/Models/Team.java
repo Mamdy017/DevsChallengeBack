@@ -19,9 +19,7 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
-/*
-    @ManyToOne
-    Challenge challenge;
-*/
+  //  @ManyToOne
+   // Challenge challenge;
 
 }
