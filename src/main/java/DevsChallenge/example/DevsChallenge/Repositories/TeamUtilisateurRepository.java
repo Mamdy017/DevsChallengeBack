@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface TeamUtilisateurRepository extends JpaRepository<TeamUtilisateurs, Long> {
     TeamUtilisateurs findByTeamAndUtilisateurs(Team team, Utilisateurs utilisateurs);
@@ -16,5 +18,8 @@ public interface TeamUtilisateurRepository extends JpaRepository<TeamUtilisateur
     Optional<TeamUtilisateurs> findByUtilisateursAndType(Utilisateurs utilisateurs, int i);
     Optional<TeamUtilisateurs> findByUtilisateursAndTypeAndChallenge(Utilisateurs utilisateurs, int i, Challenge challenge);
 
+    List<TeamUtilisateurs> findByChallengeAndTeam(Challenge challenge, Team team);
+
+    Set<TeamUtilisateurs> findByChallengeAndUtilisateurs(Challenge challenge, Utilisateurs utilisateurs);
 
 }

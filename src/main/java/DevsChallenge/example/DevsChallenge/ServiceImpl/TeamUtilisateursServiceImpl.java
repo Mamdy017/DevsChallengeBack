@@ -1,6 +1,7 @@
 package DevsChallenge.example.DevsChallenge.ServiceImpl;
 
 import DevsChallenge.example.DevsChallenge.Messages.Message;
+import DevsChallenge.example.DevsChallenge.Models.Challenge;
 import DevsChallenge.example.DevsChallenge.Models.Team;
 import DevsChallenge.example.DevsChallenge.Models.TeamUtilisateurs;
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
@@ -11,7 +12,10 @@ import DevsChallenge.example.DevsChallenge.Services.TeamUtilisateursService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -72,6 +76,36 @@ public class TeamUtilisateursServiceImpl implements TeamUtilisateursService {
 
         // Save the updated Team object to the database
         teamRepository.save(team);
+    }
+
+
+    public List<Utilisateurs> findByChallengeAndTeam(Challenge challenge, Team team) {
+        List<TeamUtilisateurs> teamUtilisateurs = new ArrayList<>();
+        for (TeamUtilisateurs tu : teamUtilisateurs) {
+            if (tu.getChallenge().equals(challenge) && tu.getTeam().contains(team)) {
+                teamUtilisateurs.add(tu);
+            }
+        }
+        List<Utilisateurs> utilisateurs = new ArrayList<>();
+        for (TeamUtilisateurs tu : teamUtilisateurs) {
+            utilisateurs.add(tu.getUtilisateurs());
+        }
+        return utilisateurs;
+    }
+
+
+    public Set<Team> getTeamsByChallengeAndUser(Challenge challenge, Utilisateurs user) {
+        Set<TeamUtilisateurs> teamUtilisateurs = new HashSet<>();
+        for (TeamUtilisateurs tu : teamUtilisateurs) {
+            if (tu.getChallenge().equals(challenge) && tu.getUtilisateurs().equals(user)) {
+                teamUtilisateurs.add(tu);
+            }
+        }
+        Set<Team> teams = new HashSet<>();
+        for (TeamUtilisateurs tu : teamUtilisateurs) {
+            teams.addAll(tu.getTeam());
+        }
+        return teams;
     }
 
 

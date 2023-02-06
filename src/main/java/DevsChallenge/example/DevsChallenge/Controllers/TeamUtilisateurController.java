@@ -17,9 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Api(value = "devsCiwara", description = "")
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -94,6 +92,23 @@ UtilisateurRepository utilisateurRepository;
 
         return teamUtilisateursService.supprimer(Id);
     }
+    @GetMapping("/afficherEquipeMembre/{challengeId}/{teamId}")
+    public List<Utilisateurs> getTeamUsersByChallengeAndTeam(@PathVariable("challengeId") Long challengeId,
+                                                             @PathVariable("teamId") Long teamId) {
+        Challenge challenge = new Challenge();
+        challenge.setId(challengeId);
+        Team team = new Team();
+        team.setId(teamId);
+        List<TeamUtilisateurs> teamUtilisateurs = teamUtilisateurRepository.findByChallengeAndTeam(challenge, team);
+        List<Utilisateurs> utilisateurs = new ArrayList<>();
+        for (TeamUtilisateurs tu : teamUtilisateurs) {
+            if (tu.getType() == 1 || tu.getType() == 2) {
+                utilisateurs.add(tu.getUtilisateurs());
+            }
+        }
+        return utilisateurs;
+    }
+
     @PostMapping("/teams/{id}/{challengeId}")
     public Object addTeamUsersToTeamForChallenge(@Param("userIds") Long[] userIds, @PathVariable Long id, @PathVariable Long challengeId) {
         Challenge challenge = challengeRepository.findById(challengeId).orElse(null);
@@ -122,6 +137,22 @@ UtilisateurRepository utilisateurRepository;
             teamUtilisateurRepository.save(teamUtilisateurs);
         }
         return Message.set("Demande envoyer aux utilisteurs !!",true);
+
+
+    }
+
+    @GetMapping("/afficherEquipeParUtilisateur/{challengeId}/{userId}")
+    public Set<Team> getTeamsByChallengeAndUser(@PathVariable Long challengeId, @PathVariable Long userId) {
+        Challenge challenge = new Challenge();
+        challenge.setId(challengeId);
+        Utilisateurs user = new Utilisateurs();
+        user.setId(userId);
+        Set<TeamUtilisateurs> teamUtilisateurs = teamUtilisateurRepository.findByChallengeAndUtilisateurs(challenge, user);
+        Set<Team> teams = new HashSet<>();
+        for (TeamUtilisateurs tu : teamUtilisateurs) {
+            teams.addAll(tu.getTeam());
+        }
+        return teams;
     }
 
 }
