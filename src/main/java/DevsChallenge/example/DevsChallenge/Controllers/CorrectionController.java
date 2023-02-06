@@ -1,5 +1,6 @@
 package DevsChallenge.example.DevsChallenge.Controllers;
 
+import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Correction;
 import DevsChallenge.example.DevsChallenge.Models.Solution;
 import DevsChallenge.example.DevsChallenge.Models.critere;
@@ -24,12 +25,10 @@ public class CorrectionController {
     CorrectionService correctionService;
 
 
-
-
     @PostMapping
-    public ResponseEntity<Correction > addEtats(@RequestParam List<String> etats,
-                                                @RequestParam Long solutionId,
-                                                @RequestParam List<Long> critereIds) {
+    public Message addEtats(@RequestParam List<String> etats,
+                            @RequestParam Long solutionId,
+                            @RequestParam List<Long> critereIds) {
         Solution solution = new Solution();
         solution.setId(solutionId);
         List<critere> criteres = new ArrayList<>();
@@ -38,7 +37,12 @@ public class CorrectionController {
             critere.setId(critereId);
             criteres.add(critere);
         }
-        correctionService.addEtats(etats, solution, criteres);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return this.correctionService.addEtats(etats, solution, criteres);
     }
+
+    @GetMapping("/afficher")
+    public List<Correction> list(){
+        return correctionService.afficher();
+    }
+
 }

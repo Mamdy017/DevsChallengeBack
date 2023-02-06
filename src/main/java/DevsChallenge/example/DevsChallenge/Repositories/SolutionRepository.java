@@ -16,4 +16,6 @@ public interface SolutionRepository extends JpaRepository<Solution,Long> {
 
     Boolean existsByTeamAndChallenge(Team team,Challenge challenge);
 
+    List<Solution> findByChallengeId(Long challengeId);
+
 }

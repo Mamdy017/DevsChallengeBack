@@ -38,7 +38,7 @@ public class CategorieServiceImpl implements CategoriesService {
             System.out.println(LocalDate.now());
             return Message.set("ajout effectue",true);
         } catch (RuntimeException e) {
-            return Message.set("une erreur s'est produite",true);
+            return Message.set("une erreur s'est produite",false);
         }
     }
 

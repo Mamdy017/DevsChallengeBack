@@ -27,6 +27,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -61,31 +62,36 @@ public class AuthController {
     @ApiOperation(value = "Connexion")
     @PostMapping("/connexion")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Connexion connexion) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(connexion.getUsernameOrEmail(), connexion.getPassword()));
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(connexion.getUsernameOrEmail(), connexion.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateJwtToken(authentication);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            List<String> roles = userDetails.getAuthorities().stream()
+                    .map(item -> {
+                        return item.getAuthority();
+                    })
+                    .collect(Collectors.toList());
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> {
-                    return item.getAuthority();
-                })
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                userDetails.getNom(),
-                userDetails.getPrenom(),
-                userDetails.getProfile(),
-                roles));
+            return ResponseEntity.ok(new JwtResponse(jwt,
+                    userDetails.getId(),
+                    userDetails.getUsername(),
+                    userDetails.getEmail(),
+                    userDetails.getNom(),
+                    userDetails.getPrenom(),
+                    userDetails.getProfile(),
+                    roles));
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.ok(Message.set("Mot de passe ou non d'utilisateur incorrect ", false));
+        }
     }
+
     @PostMapping("/connexion2")
-    public ResponseEntity<JwtResponse> authenticateUseradmin(@Valid @RequestBody Connexion connexion) {
+    public ResponseEntity<?> authenticateUseradmin(@Valid @RequestBody Connexion connexion) {
+        try {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(connexion.getUsernameOrEmail(), connexion.getPassword()));
 
@@ -109,7 +115,10 @@ public class AuthController {
                     userDetails.getProfile(),
                     roles));
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.ok(Message.set("Mot de passe ou non d'utilisateur incorrect ", false));
+        }
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.ok(Message.set("Mot de passe ou non d'utilisateur incorrect ", false));
         }
     }
 

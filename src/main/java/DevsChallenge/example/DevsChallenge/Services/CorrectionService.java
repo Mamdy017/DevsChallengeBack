@@ -10,4 +10,7 @@ import java.util.List;
 public interface CorrectionService {
 
 
-    Message addEtats(List<String> etats, Solution solution, List<critere> criteres); }
+    Message addEtats(List<String> etats, Solution solution, List<critere> criteres);
+
+    List<Correction> afficher();
+}

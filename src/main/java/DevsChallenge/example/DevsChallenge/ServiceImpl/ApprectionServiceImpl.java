@@ -31,7 +31,7 @@ public class ApprectionServiceImpl implements ApprecitionService {
                 app.setType(appreciation.getType());
                 this.appreciationRepository.save(app);
                 return Message.set("Apprecition modifiée",true);
-        }).orElseThrow(()->new RuntimeException(String.valueOf(Message.set("Une erreur s'est produite",true))));
+        }).orElseThrow(()->new RuntimeException(String.valueOf(Message.set("Une erreur s'est produite",false))));
     }
 
     @Override

@@ -55,6 +55,11 @@ public class SolutionController {
         return solutionService.afficher();
     }
 
+
+    @GetMapping("/challenges/{challengeId}/solutions")
+    public List<Solution> getSolutionsByChallengeId(@PathVariable Long challengeId) {
+        return solutionService.findByChallengeId(challengeId);
+    }
     @ApiOperation(value = "Modifier technologies")
     @PutMapping("/modifier/{Id}")
     public Solution Modifier(@PathVariable Long Id, Solution solution) {
@@ -67,6 +72,7 @@ public class SolutionController {
 
         return solutionService.supprimer(Id);
     }
+
 }
 
 

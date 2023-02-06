@@ -3,6 +3,7 @@ package DevsChallenge.example.DevsChallenge.ServiceImpl;
 import DevsChallenge.example.DevsChallenge.Messages.Message;
 
 import DevsChallenge.example.DevsChallenge.Models.*;
+import DevsChallenge.example.DevsChallenge.Repositories.CorrectionRepository;
 import DevsChallenge.example.DevsChallenge.Repositories.SolutionRepository;
 import DevsChallenge.example.DevsChallenge.Repositories.TeamUtilisateurRepository;
 import DevsChallenge.example.DevsChallenge.Services.SolutionService;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +22,10 @@ import java.util.List;
 @Service
 public class SolutionServiceImpl implements SolutionService {
     private final SolutionRepository solutionRepository;
+
+    @Autowired
+    private CorrectionRepository correctionRepository;
+    @Autowired
 private final TeamUtilisateurRepository teamUtilisateurRepository;
    /*@Override
     public Object creer(Solution solution, Utilisateurs utilisateurs, Challenge challenge, Team team) {
@@ -77,7 +84,7 @@ private final TeamUtilisateurRepository teamUtilisateurRepository;
         return solutionRepository.findById(id).map( s ->{
 
             s.setSource(solution.getSource());
-            s.setPoint(solution.getPoint());
+            s.setEtat(solution.getEtat());
             s.setLienGithub(solution.getLienGithub());
             return solutionRepository.save(s);
         }).orElseThrow(()-> new  RuntimeException("Question  non trouvée"));
@@ -89,7 +96,21 @@ private final TeamUtilisateurRepository teamUtilisateurRepository;
         return "Solution supprimée";
     }
 
+    @Override
+    public List<Solution> findByChallengeId(Long challengeId) {
+        return solutionRepository.findByChallengeId(challengeId);
+    }
 
+
+    private class SolutionScore {
+        Solution solution;
+        int score;
+
+        SolutionScore(Solution solution, int score) {
+            this.solution = solution;
+            this.score = score;
+        }
+    }
 
 
 }

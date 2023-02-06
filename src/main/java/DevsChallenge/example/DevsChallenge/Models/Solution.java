@@ -21,15 +21,15 @@ public class Solution {
     private String lienGithub;
     private String source;
     @Size(max=7)
-    private String  point;
+    private String  etat;
     @ManyToOne
     Challenge challenge;
     @ManyToOne
     Team team;
 
-    public Solution(String lienGithub, String point, String photo2) {
+    public Solution(String lienGithub, String etat, String photo2) {
         this.lienGithub=lienGithub;
-        this.point=point;
+        this.etat=etat;
         this.source=photo2;
     }
 }

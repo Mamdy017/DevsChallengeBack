@@ -24,7 +24,7 @@ import java.util.*;
 @AllArgsConstructor
 @Service
 public class ChallengeServiceImpl implements ChallengeService {
-   @Autowired
+    @Autowired
     private final ChallengeRepository challengeRepository;
 
     @Autowired
@@ -47,8 +47,8 @@ public class ChallengeServiceImpl implements ChallengeService {
 
     @Override
     public Message creer(Challenge challenge) throws MessagingException {
-        if(challengeRepository.findByTitre(challenge.getTitre()) == null) {
-            if(challenge.getDatefin().after(challenge.getDatedebut()) && challenge.getDatedebut().after(new Date())){
+        if (challengeRepository.findByTitre(challenge.getTitre()) == null) {
+            if (challenge.getDatedebut().after(new Date())) {
 //                List<Utilisateurs> listutilisateurs = new ArrayList<>();
 //                listutilisateurs = utilisateurRepository.findAll();
 //                for(Utilisateurs u : listutilisateurs){
@@ -57,31 +57,34 @@ public class ChallengeServiceImpl implements ChallengeService {
 //                    String text = templateEngine.process("newUserEmailTemplate",context);
 //               //  envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon, Arrays.asList(u.getEmail()),text);
 //                }
+                if (challenge.getDatefin().after(challenge.getDatedebut())){
                 List<Utilisateurs> listutilisateurs = new ArrayList<>();
                 listutilisateurs = utilisateurRepository.findAll();
-                for(Utilisateurs u : listutilisateurs){
+                for (Utilisateurs u : listutilisateurs) {
                     boolean isAdmin = false;
                     for (Roles r : u.getRoles()) {
-                        if(r.getName() == Role.ROLE_ADMIN || r.getName() == Role.adminuser) {
+                        if (r.getName() == Role.ROLE_ADMIN || r.getName() == Role.adminuser) {
                             isAdmin = true;
                             break;
                         }
                     }
-                    if(!isAdmin){
+                    if (!isAdmin) {
                         String mon = "DevsCiwara vient de créer la challenge " + challenge.getTitre() + " en savoir plus https://chat.openai.com/auth/login";
                         Context context = new Context();
-                        String text = templateEngine.process("newUserEmailTemplate",context);
-                        envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon, Arrays.asList(u.getEmail()),text);
+                        String text = templateEngine.process("newUserEmailTemplate", context);
+                        // envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon, Arrays.asList(u.getEmail()),text);
                     }
                 }
 
 
                 this.challengeRepository.save(challenge);
-                return Message.set("Challenge creer avec succès",true);
-            }
-            else{
-                return Message.set("La date de fin ne doit être inferieur à la date de début et la date de début doit supperieur à " +
-                        "la date d'ajourd'hui ",false);
+                return Message.set("Challenge creer avec succès", true);
+                }else{
+                    return Message.set("La date de fin ne doit être inferieur à la date de début", false);
+                }
+            } else {
+                return Message.set("La date de début doit supperieur à " +
+                        "la date d'ajourd'hui ", false);
             }
         } else {
             return Message.set("Ce challenge existe déjà", false);
@@ -89,15 +92,11 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
 
-
     @Transactional
     public Set<critere> getCriteriaByChallengeId(Long challengeId) {
         Challenge challenge = entityManager.find(Challenge.class, challengeId);
         return challenge.getCritere();
     }
-
-
-
 
 
     @Override
@@ -183,7 +182,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     public Message modifier(Long id, Challenge challenge) {
         Challenge challenge1 = challengeRepository.findById(id).orElse(null);
         if (challenge1 == null) {
-            return Message.set("erreer",false);
+            return Message.set("erreer", false);
         }
         challenge1.setTitre(challenge.getTitre());
         challenge1.setDescription(challenge.getDescription());
