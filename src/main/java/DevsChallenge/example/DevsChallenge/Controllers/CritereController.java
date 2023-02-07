@@ -30,7 +30,7 @@ baremeRepository baremeRepository1;
     @PostMapping("/ajout") public Object creer(@Param("baremeids") Long[] baremeids, @Param("criteres") String criteres){    try {
         critere Critere = new critere(criteres);
         for (Long baremeid : baremeids) {
-            Critere.getBareme().add(baremeRepository1.findById(baremeid).get());
+            Critere.getBaremes().add(baremeRepository1.findById(baremeid).get());
         }
         return critereService1.creer(Critere);
     } catch (Exception e) {

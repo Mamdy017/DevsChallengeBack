@@ -25,7 +25,7 @@ public class BaremeController {
 
     @ApiOperation(value = "Ajouter2 un categories")
     @PostMapping("/ajout")
-    public Object creer (@Param("bareme") String bareme){
+    public Object creer (@Param("bareme") int bareme){
         bareme Bareme = new bareme(bareme);
         try {
             return baremeService1.creer(Bareme);

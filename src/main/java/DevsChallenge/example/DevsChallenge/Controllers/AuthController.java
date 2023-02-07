@@ -27,7 +27,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -62,36 +61,31 @@ public class AuthController {
     @ApiOperation(value = "Connexion")
     @PostMapping("/connexion")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody Connexion connexion) {
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(connexion.getUsernameOrEmail(), connexion.getPassword()));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtUtils.generateJwtToken(authentication);
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(connexion.getUsernameOrEmail(), connexion.getPassword()));
 
-            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-            List<String> roles = userDetails.getAuthorities().stream()
-                    .map(item -> {
-                        return item.getAuthority();
-                    })
-                    .collect(Collectors.toList());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
 
-            return ResponseEntity.ok(new JwtResponse(jwt,
-                    userDetails.getId(),
-                    userDetails.getUsername(),
-                    userDetails.getEmail(),
-                    userDetails.getNom(),
-                    userDetails.getPrenom(),
-                    userDetails.getProfile(),
-                    roles));
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.ok(Message.set("Mot de passe ou non d'utilisateur incorrect ", false));
-        }
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> {
+                    return item.getAuthority();
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new JwtResponse(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                userDetails.getNom(),
+                userDetails.getPrenom(),
+                userDetails.getProfile(),
+                roles));
     }
-
     @PostMapping("/connexion2")
-    public ResponseEntity<?> authenticateUseradmin(@Valid @RequestBody Connexion connexion) {
-        try {
+    public ResponseEntity<JwtResponse> authenticateUseradmin(@Valid @RequestBody Connexion connexion) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(connexion.getUsernameOrEmail(), connexion.getPassword()));
 
@@ -115,10 +109,7 @@ public class AuthController {
                     userDetails.getProfile(),
                     roles));
         } else {
-            return ResponseEntity.ok(Message.set("Mot de passe ou non d'utilisateur incorrect ", false));
-        }
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.ok(Message.set("Mot de passe ou non d'utilisateur incorrect ", false));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 
@@ -195,7 +186,7 @@ public class AuthController {
 
 
         utilisateurRepository.save(user);
-      //  mailSender.send(emailConstructor.constructNewUserEmail(user));
+        //  mailSender.send(emailConstructor.constructNewUserEmail(user));
         System.out.println(mailSender);
         return ResponseEntity.ok(new Message("Utilisateur enregistré avec succes!",true));
     }

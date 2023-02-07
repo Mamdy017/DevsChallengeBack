@@ -22,6 +22,8 @@ public class Solution {
     private String source;
     @Size(max=7)
     private String  etat;
+
+    private int total ;
     @ManyToOne
     Challenge challenge;
     @ManyToOne
