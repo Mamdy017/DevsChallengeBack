@@ -90,6 +90,13 @@ private final TeamUtilisateurRepository teamUtilisateurRepository;
         }).orElseThrow(()-> new  RuntimeException("Question  non trouvée"));
     }
 
+    public List<Solution> getSolutionsByChallengeId(Long challengeId) {
+        List<Solution> solutions = solutionRepository.findAllByChallengeId(challengeId);
+        solutions.sort((s1, s2) -> s2.getTotal() - s1.getTotal());
+        return solutions;
+    }
+
+
 
     @Override
     public String supprimer(Long id) {

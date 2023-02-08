@@ -58,7 +58,7 @@ public class UtilisateurController {
         for (Utilisateurs u : listutilisateurs) {
             boolean isAdmin = false;
             for (Roles r : u.getRoles()) {
-                if (r.getName() == Role.ROLE_ADMIN) {
+                if (r.getName().equals(Role.ROLE_ADMIN) || r.getName().equals(Role.adminuser)) {
                     isAdmin = true;
                     break;
                 }
@@ -67,8 +67,12 @@ public class UtilisateurController {
                 listNonAdminUsers.add(u);
             }
         }
+        if(listNonAdminUsers.isEmpty()) {
+            return null;
+        }
         return listNonAdminUsers;
     }
+
 
     @PutMapping({"/modifier/{Id}"})
     public Object ModierUser(

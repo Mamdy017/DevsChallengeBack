@@ -18,14 +18,14 @@ public class critere {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String critereName;
+    private String critere;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "critere_bareme",
             joinColumns = @JoinColumn(name = "critere_id"),
             inverseJoinColumns = @JoinColumn(name = "bareme_id"))
-    private Set<bareme> baremes = new HashSet<>();
+    private Set<bareme> bareme = new HashSet<>();
 
-    public critere(String critereName) {
-        this.critereName = critereName;
+    public critere(String criteres) {
+        this.critere= criteres;
     }
 }

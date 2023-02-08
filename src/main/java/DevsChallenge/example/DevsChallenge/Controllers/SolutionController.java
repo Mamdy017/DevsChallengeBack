@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -73,6 +74,12 @@ public class SolutionController {
         return solutionService.supprimer(Id);
     }
 
+
+    @GetMapping("/challenge/{challengeId}")
+    public ResponseEntity<List<Solution>> getSolutionsByChallengeIdP(@PathVariable Long challengeId) {
+        List<Solution> solutions = solutionService.getSolutionsByChallengeId(challengeId);
+        return ResponseEntity.ok(solutions);
+    }
 }
 
 

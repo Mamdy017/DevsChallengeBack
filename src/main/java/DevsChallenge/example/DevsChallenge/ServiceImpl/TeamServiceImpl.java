@@ -56,11 +56,15 @@ public class TeamServiceImpl implements TeamService {
             return Message.set("Le challenge est déjà terminé", false);
         }
 
+        if (teamUtilisateurRepository.existsByUtilisateursAndChallenge(creator, challenge)) {
+            return Message.set("Vous avez déjà créé une équipe pour ce challenge", false);
+        }
+
         Team team = new Team();
         team.setNom(teamName);
         TeamUtilisateurs teamUtilisateurs = new TeamUtilisateurs();
         teamUtilisateurs.setUtilisateurs(creator);
-          teamUtilisateurs.setChallenge(challenge);
+        teamUtilisateurs.setChallenge(challenge);
         teamUtilisateurs.setType(1);
         teamUtilisateurs.getTeam().add(team);
         teamRepository.save(team);
@@ -68,7 +72,6 @@ public class TeamServiceImpl implements TeamService {
 
         return Message.set("Equipe créer avec succès", true);
     }
-
 
 
     @Override

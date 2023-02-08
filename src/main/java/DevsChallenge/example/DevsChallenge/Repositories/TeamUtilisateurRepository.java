@@ -21,5 +21,6 @@ public interface TeamUtilisateurRepository extends JpaRepository<TeamUtilisateur
     List<TeamUtilisateurs> findByChallengeAndTeam(Challenge challenge, Team team);
 
     Set<TeamUtilisateurs> findByChallengeAndUtilisateurs(Challenge challenge, Utilisateurs utilisateurs);
+    public boolean existsByUtilisateursAndChallenge(Utilisateurs utilisateurs, Challenge challenge);
 
 }

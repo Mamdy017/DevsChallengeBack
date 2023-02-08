@@ -19,6 +19,7 @@ public interface SolutionService {
     String supprimer(Long id);
 
     List<Solution> findByChallengeId(Long challengeId);
+    List<Solution> getSolutionsByChallengeId(Long challengeId);
 
     //List<Solution> findByUserIdAndChallengeId(Long userId, Long challengeId);
 }

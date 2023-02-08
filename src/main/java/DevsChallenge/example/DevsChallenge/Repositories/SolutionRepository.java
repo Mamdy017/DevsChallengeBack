@@ -18,4 +18,7 @@ public interface SolutionRepository extends JpaRepository<Solution,Long> {
 
     List<Solution> findByChallengeId(Long challengeId);
 
+    List<Solution> findAllByChallengeId(Long challengeId);
+
+
 }
