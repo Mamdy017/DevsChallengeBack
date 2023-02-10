@@ -3,6 +3,7 @@ package DevsChallenge.example.DevsChallenge.Services;
 
 
 import DevsChallenge.example.DevsChallenge.Messages.Message;
+import DevsChallenge.example.DevsChallenge.Models.Challenge;
 import DevsChallenge.example.DevsChallenge.Models.TeamUtilisateurs;
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 
@@ -21,4 +22,12 @@ public interface TeamUtilisateursService {
     TeamUtilisateurs trouverTeamParId(Long id);
 
     List<Utilisateurs> Afficher2();
+
+
+
+    Message updateTypeAndRemoveZero(Long id, Utilisateurs utilisateur, Challenge challenge);
+
+
+
+    List<TeamUtilisateurs> findTeamsByUser(Utilisateurs user);
 }

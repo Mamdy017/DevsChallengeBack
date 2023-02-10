@@ -67,6 +67,7 @@ public class TeamServiceImpl implements TeamService {
         teamUtilisateurs.setChallenge(challenge);
         teamUtilisateurs.setType(1);
         teamUtilisateurs.getTeam().add(team);
+        team.setUtilisateurs(creator);
         teamRepository.save(team);
         teamUtilisateurRepository.save(teamUtilisateurs);
 
