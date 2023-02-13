@@ -158,8 +158,10 @@ public class ChallengeController {
     public List<Challenge> decroissant(){
         List<Challenge> challenges = challengeService.afficher();
         challenges.sort((o1, o2) -> (int) (o2.getId() - o1.getId()));
-        challenges.forEach(challenge -> challenge.updateChallengeStatus());
-        return challenges.subList(0, Math.min(challenges.size(), 8));
+        challenges.forEach(challenge -> {
+            challenge.updateChallengeStatus();
+            challengeRepository.save(challenge);
+        });        return challenges.subList(0, Math.min(challenges.size(), 8));
     }
 
 /*        @PutMapping("/{id}")
