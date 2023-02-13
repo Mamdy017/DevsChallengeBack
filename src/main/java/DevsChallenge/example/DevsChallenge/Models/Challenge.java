@@ -77,9 +77,9 @@ public class Challenge {
     public void updateChallengeStatus() {
         Date now = new Date();
         if (datedebut.after(now)) {
-            etat = "A venir";
+            etat = "Avenir";
         } else if (datedebut.before(now) && datefin.after(now)) {
-            etat = "En cours";
+            etat = "Encours";
         } else if (datefin.before(now)) {
             etat = "Terminé";
         }

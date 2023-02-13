@@ -16,10 +16,19 @@ public class Appreciation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String type;
+    private int type;
+    private int type2;
     @ManyToOne
     Commentaire commentaire;
     @ManyToOne
     Utilisateurs utilisateurs;
+
+    public void incrementType1() {
+        this.type++;
+    }
+
+    public void incrementType2() {
+        this.type2++;
+    }
 
 }

@@ -17,4 +17,8 @@ public interface ApprecitionService {
     Object supprimer(Long id);
 
     Appreciation trouverAppParId(Long id);
+
+    Appreciation incrementType1(Long commentId);
+
+    Appreciation incrementType2(Long commentId);
 }

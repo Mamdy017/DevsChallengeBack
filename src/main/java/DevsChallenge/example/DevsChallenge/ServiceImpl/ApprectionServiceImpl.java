@@ -40,8 +40,24 @@ public class ApprectionServiceImpl implements ApprecitionService {
         return Message.set("Apprecition supprimée avec succès",true);
     }
 
+
+
     @Override
     public Appreciation trouverAppParId(Long id) {
         return appreciationRepository.findById(id).get();
+    }
+
+    @Override
+    public Appreciation incrementType1(Long commentId) {
+        Appreciation appreciation = appreciationRepository.findByCommentaireId(commentId);
+        appreciation.incrementType1();
+        return appreciationRepository.save(appreciation);
+    }
+
+    @Override
+    public Appreciation incrementType2(Long commentId) {
+        Appreciation appreciation = appreciationRepository.findByCommentaireId(commentId);
+        appreciation.incrementType2();
+        return appreciationRepository.save(appreciation);
     }
 }

@@ -1,6 +1,7 @@
 package DevsChallenge.example.DevsChallenge.Controllers;
 
 import DevsChallenge.example.DevsChallenge.Messages.Message;
+import DevsChallenge.example.DevsChallenge.Models.Appreciation;
 import DevsChallenge.example.DevsChallenge.Models.Commentaire;
 import DevsChallenge.example.DevsChallenge.Models.Question;
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
@@ -9,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,4 +56,21 @@ public class CommentaireController {
         return commentaireService.supprimer(Id);
     }
 
+    @ApiOperation(value = "Afficher question")
+    @GetMapping("/afficher/{questionId}")
+    public List<Commentaire> listparidC(@PathVariable Long questionId){
+        return commentaireService.findByQuestionId(questionId);
+    }
+
+    @PostMapping("/incrementType1")
+    public ResponseEntity<Commentaire> incrementType1(@RequestParam Long questionid) {
+        Commentaire commentaire = commentaireService.incrementType1(questionid);
+        return ResponseEntity.ok(commentaire);
+    }
+
+    @PostMapping("/incrementType2")
+    public ResponseEntity<Commentaire> incrementType2(@RequestParam Long questionid) {
+        Commentaire commentaire = commentaireService.incrementType2(questionid);
+        return ResponseEntity.ok(commentaire);
+    }
 }
