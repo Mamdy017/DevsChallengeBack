@@ -133,8 +133,10 @@ public class ChallengeController {
                 filteredChallenges.add(challenge);
             }
         }
-        filteredChallenges.forEach(challenge -> challenge.updateChallengeStatus());
-        return filteredChallenges;
+        filteredChallenges.forEach(challenge -> {
+            challenge.updateChallengeStatus();
+            challengeRepository.save(challenge);
+        });        return filteredChallenges;
     }
 
     @GetMapping("/avenir")
