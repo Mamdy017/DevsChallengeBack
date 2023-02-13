@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -195,6 +196,17 @@ public class ChallengeServiceImpl implements ChallengeService {
 
         challengeRepository.save(challenge1);
         return Message.set("Bon travail", true);
+    }
+
+
+
+    @Scheduled(fixedRate = 10 * 1000)
+    public void updateChallengeStatus() {
+        List<Challenge> challenges = challengeRepository.findAll();
+        for (Challenge challenge : challenges) {
+            challenge.updateChallengeStatus();
+            challengeRepository.save(challenge);
+        }
     }
 }
 

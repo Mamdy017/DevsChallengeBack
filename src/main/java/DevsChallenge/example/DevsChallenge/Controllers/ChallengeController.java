@@ -119,6 +119,7 @@ public class ChallengeController {
                 filteredChallenges.add(challenge);
             }
         }
+        filteredChallenges.forEach(challenge -> challenge.updateChallengeStatus());
         return filteredChallenges;
     }
 
@@ -132,6 +133,7 @@ public class ChallengeController {
                 filteredChallenges.add(challenge);
             }
         }
+        filteredChallenges.forEach(challenge -> challenge.updateChallengeStatus());
         return filteredChallenges;
     }
 
@@ -145,6 +147,8 @@ public class ChallengeController {
                 filteredChallenges.add(challenge);
             }
         }
+        filteredChallenges.forEach(challenge -> challenge.updateChallengeStatus());
+
         return filteredChallenges;
     }
 
@@ -152,6 +156,7 @@ public class ChallengeController {
     public List<Challenge> decroissant(){
         List<Challenge> challenges = challengeService.afficher();
         challenges.sort((o1, o2) -> (int) (o2.getId() - o1.getId()));
+        challenges.forEach(challenge -> challenge.updateChallengeStatus());
         return challenges.subList(0, Math.min(challenges.size(), 8));
     }
 
@@ -227,4 +232,10 @@ public Message modifyChallenge(
         return challengeService.supprimer(Id);
     }
 
+    @GetMapping("/challenges")
+    public List<Challenge> getAllChallenges() {
+        List<Challenge> challenges = challengeRepository.findAll();
+        challenges.forEach(challenge -> challenge.updateChallengeStatus());
+        return challenges;
+    }
 }

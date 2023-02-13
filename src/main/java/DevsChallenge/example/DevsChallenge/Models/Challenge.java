@@ -29,6 +29,7 @@ public class Challenge {
 
     private Date datedebut;
     private Date datefin;
+    private String etat;
     private String photo;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "challenge_critere",
@@ -71,6 +72,17 @@ public class Challenge {
         this.datefin=datefin;
         this.photo=photo;
         this.description=description;
+    }
+
+    public void updateChallengeStatus() {
+        Date now = new Date();
+        if (datedebut.after(now)) {
+            etat = "A venir";
+        } else if (datedebut.before(now) && datefin.after(now)) {
+            etat = "En cours";
+        } else if (datefin.before(now)) {
+            etat = "Terminé";
+        }
     }
 
 }
