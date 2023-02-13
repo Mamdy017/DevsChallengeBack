@@ -24,6 +24,7 @@ public class Challenge {
     private Long id;
     @Size(max = 20)
     private String titre;
+
     private String description;
 
     private Date datedebut;

@@ -1,5 +1,6 @@
 package DevsChallenge.example.DevsChallenge.Controllers;
 
+import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Challenge;
 import DevsChallenge.example.DevsChallenge.Models.Question;
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
@@ -16,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Api(value = "devsCiwara", description = "")
 @CrossOrigin(origins = "*", maxAge = 3600)
-@Api(value = "devsCiwara", description = "azertyuio")
 @RequestMapping("/devs/auth/question")
 @RestController
 @ToString
@@ -34,15 +35,16 @@ public class QuestionContrller {
 
     @ApiOperation(value = "Ajouter une question")
     @PostMapping("/ajout/{challengeId}/{userid}")
-    public Object creer (@PathVariable("challengeId") Long challengeId, @PathVariable("userid") Long userid, @Param("question") String question){
+    public Message creer (@PathVariable Long challengeId, @PathVariable Long userid, @RequestBody Question question){
 
 
             Challenge ch = challengeService.ChallengeParId(challengeId);
             Utilisateurs user =utilisateurservice.userParId(userid);
             Question Q = new Question();
-            Q.setQuestion(question);
+            Q.setQuestion(question.getQuestion());
             Q.setChallenge(ch);
             Q.setUtilisateurs(user);
+
             return questionService.creer(Q);
 
     }
@@ -53,6 +55,16 @@ public class QuestionContrller {
         return questionService.afficher();
     }
 
+    @ApiOperation(value = "Afficher question")
+    @GetMapping("/afficher/{challengeId}")
+    public List<Question> listparidC(@PathVariable Long challengeId){
+        return questionService.findByChallengeId(challengeId);
+    }
+    @ApiOperation(value = "Afficher question")
+    @GetMapping("/afficherParId/{id}")
+    public Question listparid(@PathVariable Long id){
+        return  questionService.solutionParId(id);
+    }
     @ApiOperation(value = "Modifier question")
     @PutMapping("/modifier/{Id}")
     public Question Modifier(@PathVariable Long Id, Question question) {

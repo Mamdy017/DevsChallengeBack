@@ -16,8 +16,9 @@ import java.util.List;
 public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
     @Override
-    public Question creer(Question question) {
-        return questionRepository.save(question);
+    public Message creer(Question question) {
+        this.questionRepository.save(question);
+        return Message.set("Question psée avec succès",true);
     }
 
     @Override
@@ -37,6 +38,11 @@ public class QuestionServiceImpl implements QuestionService {
     public Object supprimer(Long id) {
         this.questionRepository.deleteById(id);
         return Message.set( "Question supprimée avec succès", true);
+    }
+
+    @Override
+    public List<Question> findByChallengeId(Long challengeId) {
+        return questionRepository.findByChallengeId(challengeId);
     }
 
     @Override
