@@ -149,7 +149,10 @@ public class ChallengeController {
                 filteredChallenges.add(challenge);
             }
         }
-        filteredChallenges.forEach(challenge -> challenge.updateChallengeStatus());
+        filteredChallenges.forEach(challenge -> {
+            challenge.updateChallengeStatus();
+            challengeRepository.save(challenge);
+        });
 
         return filteredChallenges;
     }
