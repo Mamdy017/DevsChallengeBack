@@ -36,6 +36,8 @@ public class Utilisateurs {
     @Size(max=150)
     private String password;
     private String profile;
+    @Size(max=150)
+    private String numero;
     @Size(max = 2)
     private int mois;
 
@@ -45,7 +47,7 @@ public class Utilisateurs {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Roles> roles = new HashSet<>();
 
-    public Utilisateurs(String username, String email, String nom, String prenom, String password, String profile, int mois) {
+    public Utilisateurs(String username, String email, String nom, String prenom, String password, String profile, int mois,String numero) {
         this.email=email;
         this.nom=nom;
         this.prenom=prenom;
@@ -53,6 +55,17 @@ public class Utilisateurs {
         this.username=username;
         this.profile = profile;
         this.mois=mois;
+        this.numero=numero;
+    }
+    public void Utilisateurs1(String username, String email, String nom, String prenom, String password, String profile, int mois, String numero) {
+        this.email=email;
+        this.nom=nom;
+        this.prenom=prenom;
+        this.password=password;
+        this.username=username;
+        this.profile = profile;
+        this.mois=mois;
+        this.numero=numero;
     }
 
     public Utilisateurs(Long userdid) {

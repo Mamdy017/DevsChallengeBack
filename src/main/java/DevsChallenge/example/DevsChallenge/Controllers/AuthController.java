@@ -82,6 +82,8 @@ public class AuthController {
                 userDetails.getNom(),
                 userDetails.getPrenom(),
                 userDetails.getProfile(),
+                userDetails.getNumero(),
+                userDetails.getMois(),
                 roles));
     }
     @PostMapping("/connexion2")
@@ -107,6 +109,8 @@ public class AuthController {
                     userDetails.getNom(),
                     userDetails.getPrenom(),
                     userDetails.getProfile(),
+                    userDetails.getNumero(),
+                    userDetails.getMois(),
                     roles));
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -140,7 +144,9 @@ public class AuthController {
                 inscription.getPrenom(),
                 encoder.encode(inscription.getPassword()),
                 inscription.getProfile(),
-                inscription.getMois()
+                inscription.getMois(),
+                inscription.getNumero()
+
         );
         Set<String> strRoles = inscription.getRoles();
         Set<Roles> roles = new HashSet<>();

@@ -22,6 +22,8 @@ public class Inscription {
     @Size(max=150)
     private String password;
     private String profile;
+    @Size(max=150)
+    private String numero;
     @Size(max = 2)
     private int mois;
     private Set<String> roles;
