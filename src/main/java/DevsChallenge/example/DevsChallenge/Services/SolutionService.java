@@ -21,5 +21,8 @@ public interface SolutionService {
     List<Solution> findByChallengeId(Long challengeId);
     List<Solution> getSolutionsByChallengeId(Long challengeId);
 
+    List<Solution> getNonEtat1Solutions();
+
+
     //List<Solution> findByUserIdAndChallengeId(Long userId, Long challengeId);
 }

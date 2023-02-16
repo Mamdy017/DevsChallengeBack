@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -119,5 +117,8 @@ private final TeamUtilisateurRepository teamUtilisateurRepository;
         }
     }
 
-
+    @Override
+    public List<Solution> getNonEtat1Solutions() {
+        return solutionRepository.findByEtatNot("1");
+    }
 }

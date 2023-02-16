@@ -88,12 +88,10 @@ public class UtilisateurController {
         Utilisateurs utilisateuramodifier = new Utilisateurs(username,email,nom,prenom,ProfileNom,numero);
         System.out.println(utilisateuramodifier);
         if (profile != null){
-
             utilisateuramodifier.setProfile(SaveImage.save(profile,ProfileNom,"profile"));
             log.info("Utilisateur "+utilisateuramodifier.getUsername() + " modifié avec succès");
             System.out.println(utilisateuramodifier);
             this.utilisateurservice.Modifier(Id,utilisateuramodifier);
-
         }
         else {
             Message.set("Ajouter un fichier valide",false);

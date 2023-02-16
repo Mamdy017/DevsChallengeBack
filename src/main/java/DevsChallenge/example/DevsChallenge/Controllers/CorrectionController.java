@@ -4,6 +4,7 @@ import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Correction;
 import DevsChallenge.example.DevsChallenge.Models.Solution;
 import DevsChallenge.example.DevsChallenge.Models.critere;
+import DevsChallenge.example.DevsChallenge.Repositories.critereRepository;
 import DevsChallenge.example.DevsChallenge.Services.CorrectionService;
 import io.swagger.annotations.Api;
 import lombok.ToString;
@@ -23,6 +24,8 @@ import java.util.List;
 public class CorrectionController {
     @Autowired
     CorrectionService correctionService;
+    @Autowired
+    private DevsChallenge.example.DevsChallenge.Repositories.critereRepository critereRepository;
 
 
     @PostMapping
@@ -33,8 +36,11 @@ public class CorrectionController {
         solution.setId(solutionId);
         List<critere> criteres = new ArrayList<>();
         for (Long critereId : critereIds) {
+            critere critere1 = critereRepository.findById(critereId).get();
             critere critere = new critere();
             critere.setId(critereId);
+            critere.setBaremes(critere1.getBaremes());
+
             criteres.add(critere);
         }
         return this.correctionService.addEtats(etats, solution, criteres);

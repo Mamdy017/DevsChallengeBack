@@ -80,6 +80,12 @@ public class SolutionController {
         List<Solution> solutions = solutionService.getSolutionsByChallengeId(challengeId);
         return ResponseEntity.ok(solutions);
     }
+
+    @GetMapping("/non-etat-1")
+    public List<Solution> getNonEtat1Solutions() {
+        return solutionService.getNonEtat1Solutions();
+    }
+
 }
 
 

@@ -15,7 +15,7 @@ public interface SolutionRepository extends JpaRepository<Solution,Long> {
     //List<Solution> findByUserIdAndChallengeId(Long userId, Long challengeId);
 
     Boolean existsByTeamAndChallenge(Team team,Challenge challenge);
-
+    List<Solution> findByEtatNot(String etat);
     List<Solution> findByChallengeId(Long challengeId);
 
     List<Solution> findAllByChallengeId(Long challengeId);
