@@ -19,7 +19,7 @@ public class critere {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int baremes;
+    //private int baremes;
     private String critere;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "critere_bareme",

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.Console;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CorrectionServiceImpl implements CorrectionService {
@@ -24,30 +25,6 @@ public class CorrectionServiceImpl implements CorrectionService {
     @Autowired
     SolutionRepository solutionRepository;
 
-/*    public Message addEtats(List<String> etats, Solution solution, List<critere> criteres) {
-        if (etats.size() != criteres.size()) {
-            return Message.set("Le nombre d'états et de critères doit être égal",false);
-        }
-        Solution currentSolution = solutionRepository.findById(solution.getId()).orElse(null);
-        if (currentSolution == null) {
-           Message.set("La solution avec l'ID spécifié n'existe pas",false);
-        }
-        if (currentSolution.getEtat().equals("1")) {
-            return Message.set("Cette solution a été déjà corriger",false);
-        }
-        for (int i = 0; i < criteres.size(); i++) {
-            Correction correction = new Correction();
-            correction.setEtat(etats.get(i));
-            correction.setSolution(solution);
-            correction.setCritere(Collections.singleton(criteres.get(i)));
-            currentSolution.setEtat("1");
-            currentSolution.setTotal(100000);
-            this.correctionRepository.save(correction);
-            solutionRepository.save(currentSolution);
-        }
-
-        return Message.set("cool",true);
-    }*/
 
     public Message addEtats(List<String> etats, Solution solution, List<critere> criteres) {
         if (etats.size() != criteres.size()) {
@@ -67,22 +44,23 @@ public class CorrectionServiceImpl implements CorrectionService {
         System.out.println(criteres);
         for (int i = 0; i < criteres.size(); i++) {
             critere critere = new critere();
-            critere = criteres.get(i);
+            critere critereObjet = criteres.get(i);
+            Set<bareme> baremeObjets = critereObjet.getBareme();
+            bareme baremeObjet = baremeObjets.iterator().next(); // On suppose qu'il y a un seul objet bareme par critere
             String etat = etats.get(i);
-System.out.println("mon etat"+criteres.get(i).getBaremes());
+System.out.println("mon etat"+etat);
             int bareme = 0;
             if (etat.equals("valide")) {
-                bareme = critere.getBaremes();
-                System.out.println("mon bareme"+ bareme);
+                bareme = baremeObjet.getBareme();
+                System.out.println("mon valeur"+bareme);
             } else if (etat.equals("partiel")) {
-                bareme = critere.getBaremes() / 2;
+                bareme = baremeObjet.getBareme() / 2;
             }
-
             total += bareme;
             Correction correction = new Correction();
             correction.setEtat(etat);
             correction.setSolution(solution);
-            correction.setCritere(Collections.singleton(critere));
+            correction.setCritere(Collections.singleton(critereObjet));
             correctionRepository.save(correction);
         }
         System.out.println(total);

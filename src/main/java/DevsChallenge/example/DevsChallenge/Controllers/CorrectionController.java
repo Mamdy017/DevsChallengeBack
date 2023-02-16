@@ -39,7 +39,7 @@ public class CorrectionController {
             critere critere1 = critereRepository.findById(critereId).get();
             critere critere = new critere();
             critere.setId(critereId);
-            critere.setBaremes(critere1.getBaremes());
+            critere.setBareme(critere1.getBareme());
 
             criteres.add(critere);
         }
