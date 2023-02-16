@@ -57,16 +57,21 @@ public class Utilisateurs {
         this.mois=mois;
         this.numero=numero;
     }
-    public void Utilisateurs1(String username, String email, String nom, String prenom, String password, String profile, int mois, String numero) {
+
+    public Utilisateurs(String username, String email, String nom, String prenom,String profile, String numero) {
+
+
         this.email=email;
         this.nom=nom;
         this.prenom=prenom;
-        this.password=password;
+
         this.username=username;
         this.profile = profile;
-        this.mois=mois;
+
         this.numero=numero;
     }
+
+
 
     public Utilisateurs(Long userdid) {
         this.id = userdid;

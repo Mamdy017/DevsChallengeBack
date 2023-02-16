@@ -54,8 +54,9 @@ public class UtilisateurServiceImplements implements Utilisateurservice {
                     use.setNom(users.getNom());
                     use.setPrenom(users.getPrenom());
                     use.setProfile(users.getProfile());
-                    use.setMois(users.getMois());
-                    use.setPassword(passwordEncoder.encode(users.getPassword()));
+                  //  use.setMois(users.getMois());
+                   // use.setPassword(passwordEncoder.encode(users.getPassword()));
+                    use.setNumero(users.getNumero());
                     System.out.println("####################################");
                     System.out.println(use);
                     utilisateurRepository.save(use);
