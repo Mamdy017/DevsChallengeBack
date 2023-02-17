@@ -184,7 +184,8 @@ public class AuthController {
         user.setMois(LocalDate.now().getMonthValue());
         if (strRoles != null && strRoles.contains("adminuser")) {
             String password = String.valueOf(inscription.getPrenom().charAt(0)) + String.valueOf(inscription.getNom().charAt(0)) + inscription.getNom();
-            user.setPassword(encoder.encode(inscription.getPassword().toLowerCase()));
+            password = password.toLowerCase();
+            user.setPassword(encoder.encode(password));
             System.out.println(password);
         } else {
             user.setPassword(encoder.encode(inscription.getPassword()));
