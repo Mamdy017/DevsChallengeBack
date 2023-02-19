@@ -48,12 +48,12 @@ public class CorrectionServiceImpl implements CorrectionService {
             Set<bareme> baremeObjets = critereObjet.getBareme();
             bareme baremeObjet = baremeObjets.iterator().next(); // On suppose qu'il y a un seul objet bareme par critere
             String etat = etats.get(i);
-System.out.println("mon etat"+etat);
+
             int bareme = 0;
-            if (etat.equals("valide")) {
+            if (etat.equals("Valider")) {
                 bareme = baremeObjet.getBareme();
                 System.out.println("mon valeur"+bareme);
-            } else if (etat.equals("partiel")) {
+            } else if (etat.equals("Partiel")) {
                 bareme = baremeObjet.getBareme() / 2;
             }
             total += bareme;
@@ -63,8 +63,6 @@ System.out.println("mon etat"+etat);
             correction.setCritere(Collections.singleton(critereObjet));
             correctionRepository.save(correction);
         }
-        System.out.println(total);
-
         currentSolution.setEtat("1");
         currentSolution.setTotal(total);
         solutionRepository.save(currentSolution);

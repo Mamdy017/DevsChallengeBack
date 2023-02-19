@@ -28,9 +28,9 @@ public class CorrectionController {
     private DevsChallenge.example.DevsChallenge.Repositories.critereRepository critereRepository;
 
 
-    @PostMapping
+    @PostMapping("/{solutionId}")
     public Message addEtats(@RequestParam List<String> etats,
-                            @RequestParam Long solutionId,
+                            @PathVariable Long solutionId,
                             @RequestParam List<Long> critereIds) {
         Solution solution = new Solution();
         solution.setId(solutionId);
