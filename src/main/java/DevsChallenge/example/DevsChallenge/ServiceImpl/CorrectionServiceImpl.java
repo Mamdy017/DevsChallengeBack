@@ -36,7 +36,7 @@ public class CorrectionServiceImpl implements CorrectionService {
             return Message.set("La solution avec l'ID spécifié n'existe pas", false);
         }
 
-        if (currentSolution.getEtat().equals("1")) {
+        if (currentSolution.getEtat()==1) {
             return Message.set("Cette solution a déjà été corrigée", false);
         }
 
@@ -63,7 +63,7 @@ public class CorrectionServiceImpl implements CorrectionService {
             correction.setCritere(Collections.singleton(critereObjet));
             correctionRepository.save(correction);
         }
-        currentSolution.setEtat("1");
+        currentSolution.setEtat(1);
         currentSolution.setTotal(total);
         solutionRepository.save(currentSolution);
 

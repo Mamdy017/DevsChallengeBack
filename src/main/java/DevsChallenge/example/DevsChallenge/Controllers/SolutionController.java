@@ -34,9 +34,9 @@ public class SolutionController {
                        @PathVariable("teamid") Team teamid,
                        @PathVariable("idusers") Utilisateurs idusers,
                        @RequestParam(value = "lienGithub", required = false) String lienGithub,
-                       @RequestParam(value = "source", required = false) MultipartFile source,
-                       @RequestParam(value = "point", required = false) String point) throws IOException, MessagingException {
-       Solution solution = new Solution(lienGithub, point, "");
+                       @RequestParam(value = "source", required = false) MultipartFile source
+                      ) throws IOException, MessagingException {
+       Solution solution = new Solution(lienGithub, "");
        if (source != null) {
            String photo2 = teamid.getNom() + source.getOriginalFilename();
            solution.setSource(SaveImage.save(source, photo2, "solution"));
@@ -48,6 +48,23 @@ public class SolutionController {
 
 
 
+    @ApiOperation(value = "Ajouter2 un une solution")
+    @PostMapping("/ajout/{challengeid}/{idusers}")
+    public Object creerParUser(@PathVariable("challengeid") Challenge challengeid,
+
+                        @PathVariable("idusers") Utilisateurs idusers,
+                        @RequestParam(value = "lienGithub", required = false) String lienGithub,
+                        @RequestParam(value = "source", required = false) MultipartFile source
+                    ) throws IOException, MessagingException {
+        Solution solution = new Solution(lienGithub, "");
+        if (source != null) {
+            String photo2 = idusers.getNom() + source.getOriginalFilename();
+            solution.setSource(SaveImage.save(source, photo2, "solution"));
+        }
+        solution.setChallenge(challengeid);
+        solution.setUtilisateurs(idusers);
+        return solutionService.creerPayuser(solution, challengeid, idusers);
+    }
 
 
     @ApiOperation(value = "Afficher techonologies")

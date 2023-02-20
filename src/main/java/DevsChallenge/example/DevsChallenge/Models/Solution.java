@@ -21,17 +21,19 @@ public class Solution {
     private String lienGithub;
     private String source;
     @Size(max=7)
-    private String  etat;
+    private int  etat;
 
     private int total ;
     @ManyToOne
     Challenge challenge;
-    @ManyToOne
+    @ManyToOne(optional = true)
     Team team;
 
-    public Solution(String lienGithub, String etat, String photo2) {
+    @ManyToOne
+    Utilisateurs utilisateurs;
+
+    public Solution(String lienGithub,  String photo2) {
         this.lienGithub=lienGithub;
-        this.etat=etat;
         this.source=photo2;
     }
 }
