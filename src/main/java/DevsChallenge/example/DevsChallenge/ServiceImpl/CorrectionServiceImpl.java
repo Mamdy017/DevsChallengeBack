@@ -41,7 +41,7 @@ public class CorrectionServiceImpl implements CorrectionService {
         }
 
         int total = 0;
-        System.out.println(criteres);
+
         for (int i = 0; i < criteres.size(); i++) {
             critere critere = new critere();
             critere critereObjet = criteres.get(i);

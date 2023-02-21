@@ -45,13 +45,9 @@ public class SolutionController {
        solution.setTeam(teamid);
        return solutionService.creer(solution, challengeid, teamid, idusers);
    }
-
-
-
-    @ApiOperation(value = "Ajouter2 un une solution")
-    @PostMapping("/ajout/{challengeid}/{idusers}")
+   @ApiOperation(value = "Ajouter2 un une solution")
+    @PostMapping("/ajout2/{challengeid}/{idusers}")
     public Object creerParUser(@PathVariable("challengeid") Challenge challengeid,
-
                         @PathVariable("idusers") Utilisateurs idusers,
                         @RequestParam(value = "lienGithub", required = false) String lienGithub,
                         @RequestParam(value = "source", required = false) MultipartFile source

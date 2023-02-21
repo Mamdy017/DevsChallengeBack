@@ -65,7 +65,8 @@ private final TeamUtilisateurRepository teamUtilisateurRepository;
             }else if (teamUtilisateurs.getType() != 1) {
                 return new ResponseEntity<>(Message.set("Vous n'êtes pas autorisé à soumettre une solution", false), HttpStatus.BAD_REQUEST);
             } else {
-                return new ResponseEntity<>(solutionRepository.save(solution), HttpStatus.CREATED);
+                this.solutionRepository.save(solution);
+                return new ResponseEntity<>(Message.set("Solution ajoutée avec succès",true), HttpStatus.CREATED);
             }
         } else {
             return new ResponseEntity<>(Message.set("Vous avez déjà ajouté une solution", true), HttpStatus.OK);
@@ -87,7 +88,8 @@ private final TeamUtilisateurRepository teamUtilisateurRepository;
             } else if (!solution.getLienGithub().isEmpty() && !solution.getSource().isEmpty()) {
                 return new ResponseEntity<>(Message.set("Veuillez n'ajouter qu'un lien Github ou une source", false), HttpStatus.BAD_REQUEST);
             } else {
-                return new ResponseEntity<>(solutionRepository.save(solution), HttpStatus.CREATED);
+                this.solutionRepository.save(solution);
+                return new ResponseEntity<>(Message.set("Solution ajoutée avec succès",true), HttpStatus.CREATED);
             }
         } else {
             return new ResponseEntity<>(Message.set("Vous avez déjà ajouté une solution", false), HttpStatus.BAD_REQUEST);
