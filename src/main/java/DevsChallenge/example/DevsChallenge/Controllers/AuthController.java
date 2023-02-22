@@ -23,7 +23,6 @@ import DevsChallenge.example.DevsChallenge.Services.UserDetailsImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -60,7 +59,7 @@ public class AuthController {
     JavaMailSender mailSender;
     @ApiOperation(value = "Connexion")
     @PostMapping("/connexion")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody Connexion connexion) {
+    public Object authenticateUser(@Valid @RequestBody Connexion connexion) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(connexion.getUsernameOrEmail(), connexion.getPassword()));
@@ -75,19 +74,24 @@ public class AuthController {
                 })
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                userDetails.getNom(),
-                userDetails.getPrenom(),
-                userDetails.getProfile(),
-                userDetails.getNumero(),
-                userDetails.getMois(),
-                roles));
+        if(userDetails.getEtat()){
+            return ResponseEntity.ok(new JwtResponse(jwt,
+                    userDetails.getId(),
+                    userDetails.getUsername(),
+                    userDetails.getEmail(),
+                    userDetails.getNom(),
+                    userDetails.getPrenom(),
+                    userDetails.getProfile(),
+                    userDetails.getNumero(),
+                    userDetails.getMois(),
+                    roles));
+        }else {
+            return  Message.set("Ce compte est bannis",false);
+        }
+
     }
     @PostMapping("/connexion2")
-    public ResponseEntity<JwtResponse> authenticateUseradmin(@Valid @RequestBody Connexion connexion) {
+    public Object authenticateUseradmin(@Valid @RequestBody Connexion connexion) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(connexion.getUsernameOrEmail(), connexion.getPassword()));
 
@@ -102,18 +106,24 @@ public class AuthController {
                 .collect(Collectors.toList());
 
         if (roles.contains("ROLE_ADMIN") || roles.contains("adminuser")) {
-            return ResponseEntity.ok(new JwtResponse(jwt,
-                    userDetails.getId(),
-                    userDetails.getUsername(),
-                    userDetails.getEmail(),
-                    userDetails.getNom(),
-                    userDetails.getPrenom(),
-                    userDetails.getProfile(),
-                    userDetails.getNumero(),
-                    userDetails.getMois(),
-                    roles));
+            if(userDetails.getEtat()){
+                return ResponseEntity.ok(new JwtResponse(jwt,
+                        userDetails.getId(),
+                        userDetails.getUsername(),
+                        userDetails.getEmail(),
+                        userDetails.getNom(),
+                        userDetails.getPrenom(),
+                        userDetails.getProfile(),
+                        userDetails.getNumero(),
+                        userDetails.getMois(),
+                        roles));
+            }
+            else {
+                return  Message.set("Ce compte est bannis",false);
+            }
+
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return Message.set("Non d'utilisateur ou mot de passe incorrect",false);
         }
     }
 
@@ -181,6 +191,7 @@ public class AuthController {
 
         user.setRoles(roles);
         user.setProfile("http://127.0.0.1/DesCiwara/Images/avatar.png");
+        user.setEtat(true);
         user.setMois(LocalDate.now().getMonthValue());
         if (strRoles != null && strRoles.contains("adminuser")) {
             String password = String.valueOf(inscription.getPrenom().charAt(0)) + String.valueOf(inscription.getNom().charAt(0)) + inscription.getNom();

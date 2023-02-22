@@ -47,17 +47,17 @@ public class TeamServiceImpl implements TeamService {
     public Message createTeamAndAddCreator(String teamName, Utilisateurs creator, Challenge challenge) {
         Team existingTeam = teamRepository.findByNom(teamName);
         if (existingTeam != null) {
-            return Message.set("Une équipe avec ce nom existe déjà pour ce challenge", false);
+            return (Message) Message.set("Une équipe avec ce nom existe déjà pour ce challenge", false);
         }
 
         Date dateFin = challenge.getDatefin();
 
         if (dateFin != null && dateFin.before(new Date())) {
-            return Message.set("Le challenge est déjà terminé", false);
+            return (Message) Message.set("Le challenge est déjà terminé", false);
         }
 
         if (teamUtilisateurRepository.existsByUtilisateursAndChallenge(creator, challenge)) {
-            return Message.set("Vous avez déjà créé une équipe pour ce challenge", false);
+            return (Message) Message.set("Vous avez déjà créé une équipe pour ce challenge", false);
         }
 
         Team team = new Team();
@@ -71,7 +71,7 @@ public class TeamServiceImpl implements TeamService {
         teamRepository.save(team);
         teamUtilisateurRepository.save(teamUtilisateurs);
 
-        return Message.set("Equipe créer avec succès", true);
+        return (Message) Message.set("Equipe créer avec succès", true);
     }
 
 

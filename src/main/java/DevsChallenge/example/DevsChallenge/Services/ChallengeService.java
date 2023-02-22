@@ -20,4 +20,6 @@ public interface ChallengeService {
     String supprimer(Long id);
 
     Challenge ChallengeParId(Long id);
+
+    Message modifierEtat1(Long id);
 }

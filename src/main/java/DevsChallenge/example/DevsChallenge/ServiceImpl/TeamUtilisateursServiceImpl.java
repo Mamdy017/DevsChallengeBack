@@ -53,7 +53,7 @@ public class TeamUtilisateursServiceImpl implements TeamUtilisateursService {
 
     @Override
     public Message modifier(Long id, TeamUtilisateurs teamUtilisateurs) {
-        return this.teamUtilisateurRepository.findById(id).map(tu -> {
+        return (Message) this.teamUtilisateurRepository.findById(id).map(tu -> {
             tu.setType(teamUtilisateurs.getType());
             this.teamUtilisateurRepository.save(tu);
             return Message.set(" Demande confirmée", true);
@@ -136,7 +136,7 @@ public class TeamUtilisateursServiceImpl implements TeamUtilisateursService {
                 .setParameter("challenge", challenge)
                 .executeUpdate();
 
-        return Message.set("Demande accepte avec succes",true);
+        return (Message) Message.set("Demande accepte avec succes",true);
     }
 
 

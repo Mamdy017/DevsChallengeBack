@@ -31,6 +31,7 @@ public class Challenge {
     private Date datefin;
     private String etat;
     private String photo;
+    private  Boolean etat1;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "challenge_critere",
             joinColumns = @JoinColumn(name = "challenge_id"),

@@ -40,7 +40,7 @@ public class UtilisateurController {
 
     @GetMapping("/afficher")
     public List<Utilisateurs> AfficherUsers(){
-        log.info("Affichage de la liste des Collaborateurs ");
+      //  log.info("Affichage de la liste des Collaborateurs ");
 
         return utilisateurservice.Afficher();
     }
@@ -57,13 +57,13 @@ public class UtilisateurController {
         List<Utilisateurs> listNonAdminUsers = new ArrayList<>();
         for (Utilisateurs u : listutilisateurs) {
             boolean isAdmin = false;
-            for (Roles r : u.getRoles()) {
+            for (Roles r : u.getRoles() ) {
                 if (r.getName().equals(Role.ROLE_ADMIN) || r.getName().equals(Role.adminuser)) {
                     isAdmin = true;
                     break;
                 }
             }
-            if (!isAdmin) {
+            if (!isAdmin && u.getEtat()) {
                 listNonAdminUsers.add(u);
             }
         }
@@ -97,6 +97,15 @@ public class UtilisateurController {
             Message.set("Ajouter un fichier valide",false);
         }
         return Message.set("Utilisateur modifié avec succès",true);
+    }
+
+    @PutMapping({"/modifierS/{Id}"})
+    public Object ModierUser(
+            @PathVariable Long Id
+          ) throws IOException {
+                    this.utilisateurservice.ModifierS(Id);
+
+        return Message.set("Utilisateur bannis",true);
     }
 
 

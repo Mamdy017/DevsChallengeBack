@@ -1,5 +1,6 @@
 package DevsChallenge.example.DevsChallenge.Services;
 
+import DevsChallenge.example.DevsChallenge.Messages.Message;
 import DevsChallenge.example.DevsChallenge.Models.Utilisateurs;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,7 +16,9 @@ public interface Utilisateurservice {
 
     String Supprimer(Long id_users);  // LA METHODE PERMETTANT DE SUPPRIMER UN COLLABORATEUR
 
-    String Modifier( Long Id, Utilisateurs users);   // LA METHODE PERMETTANT DE MODIFIER UN COLLABORATEUR
+    Message Modifier(Long Id, Utilisateurs users);   // LA METHODE PERMETTANT DE MODIFIER UN COLLABORATEUR
+
+    Message ModifierS(Long Id);
 
     List<Utilisateurs> Afficher();
 

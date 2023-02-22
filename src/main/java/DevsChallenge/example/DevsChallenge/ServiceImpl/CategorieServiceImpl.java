@@ -17,6 +17,7 @@ import java.util.List;
 public class CategorieServiceImpl implements CategoriesService {
     @Autowired
     private final CategorieRepository categorieRepository;
+
     @Override
     public Categories creer(Categories categories) {
         return categorieRepository.save(categories);
@@ -36,9 +37,9 @@ public class CategorieServiceImpl implements CategoriesService {
             category.modifier(categories.getNom());
             categorieRepository.save(category);
             System.out.println(LocalDate.now());
-            return Message.set("ajout effectue",true);
+            return (Message) Message.set("ajout effectue", true);
         } catch (RuntimeException e) {
-            return Message.set("une erreur s'est produite",false);
+            return (Message) Message.set("une erreur s'est produite", false);
         }
     }
 

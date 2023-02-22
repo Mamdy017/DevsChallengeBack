@@ -41,6 +41,7 @@ public class Utilisateurs {
     @Size(max = 2)
     private int mois;
 
+    private Boolean etat;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

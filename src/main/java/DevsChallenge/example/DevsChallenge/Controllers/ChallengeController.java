@@ -1,4 +1,5 @@
 package DevsChallenge.example.DevsChallenge.Controllers;
+
 import DevsChallenge.example.DevsChallenge.Images.SaveImage;
 import DevsChallenge.example.DevsChallenge.Messages.EnvoyeMailService;
 import DevsChallenge.example.DevsChallenge.Messages.Message;
@@ -52,23 +53,25 @@ public class ChallengeController {
 
     @Autowired
     ChallengeRepository challengeRepository;
+
     @ApiOperation(value = "Ajouter2 un challenge")
     @PostMapping("/ajout")
-    public Object creer (
+    public Object creer(
             @Param("critereids") Long[] critereids,
             @Param("tecnhoids") Long[] tecnhoids,
             @Param("cateids") Long[] cateids,
             @Param("titre") String titre,
             @Param("description") String description,
             @Param("datedebut") Date datedebut, @Param("datefin") Date datefin,
-            @Param("photo")MultipartFile photo
+            @Param("photo") MultipartFile photo
     ) throws IOException, MessagingException {
 
 
-        String photo2 = titre +photo.getOriginalFilename();
-        Challenge challenge = new Challenge(titre,description,datedebut,datefin,photo2);
+        String photo2 = titre + photo.getOriginalFilename();
 
-        challenge.setPhoto(SaveImage.save(photo,photo2,"challenge"));
+        Challenge challenge = new Challenge(titre, description, datedebut, datefin, photo2);
+        challenge.setEtat1(true);
+        challenge.setPhoto(SaveImage.save(photo, photo2, "challenge"));
         for (Long critereid : critereids) {
             challenge.getCritere().add(critereRepository1.findById(critereid).get());
         }
@@ -82,24 +85,23 @@ public class ChallengeController {
     }
 
 
-
     @ApiOperation(value = "Afficher techonologies")
     @GetMapping("/afficher")
-    public List<Challenge> list(){
+    public List<Challenge> list() {
+
         return challengeService.afficher();
     }
 
 
     @ApiOperation(value = "Afficher techonologies")
     @GetMapping("/afficher/{id}")
-    public Challenge list1(@PathVariable Long id ){
+    public Challenge list1(@PathVariable Long id) {
         Challenge challenge = challengeService.ChallengeParId(id);
         return challenge != null ? challenge : null;
     }
 
     @GetMapping("/criteria/{challengeId}")
-    public
-    ResponseEntity<Set<critere>> getCriteriaByChallengeId(@PathVariable Long challengeId) {
+    public ResponseEntity<Set<critere>> getCriteriaByChallengeId(@PathVariable Long challengeId) {
         Challenge challenge = challengeRepository.findById(challengeId).orElse(null);
         if (challenge == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -110,12 +112,12 @@ public class ChallengeController {
 
 
     @GetMapping("/encours")
-    public List<Challenge> encours(){
+    public List<Challenge> encours() {
         List<Challenge> allChallenges = challengeService.afficher();
         List<Challenge> filteredChallenges = new ArrayList<>();
         Date today = new Date();
         for (Challenge challenge : allChallenges) {
-            if (challenge.getDatedebut().before(today) && challenge.getDatefin().after(today)) {
+            if (challenge.getDatedebut().before(today) && challenge.getDatefin().after(today) && challenge.getEtat1()) {
                 filteredChallenges.add(challenge);
             }
         }
@@ -124,32 +126,34 @@ public class ChallengeController {
     }
 
     @GetMapping("/terminer")
-    public List<Challenge> terminer(){
+    public List<Challenge> terminer() {
         List<Challenge> allChallenges = challengeService.afficher();
         List<Challenge> filteredChallenges = new ArrayList<>();
         Date today = new Date();
         for (Challenge challenge : allChallenges) {
-            if (challenge.getDatedebut().before(today) && challenge.getDatefin().before(today)) {
+            if (challenge.getDatedebut().before(today) && challenge.getDatefin().before(today) && challenge.getEtat1()) {
                 filteredChallenges.add(challenge);
             }
         }
         filteredChallenges.forEach(challenge -> {
             challenge.updateChallengeStatus();
             challengeRepository.save(challenge);
-        });        return filteredChallenges;
+        });
+        return filteredChallenges;
     }
 
     @GetMapping("/avenir")
-    public List<Challenge> avenir(){
+    public List<Challenge> avenir() {
         List<Challenge> allChallenges = challengeService.afficher();
         List<Challenge> filteredChallenges = new ArrayList<>();
         Date today = new Date();
         for (Challenge challenge : allChallenges) {
-            if (challenge.getDatedebut().after(today) && challenge.getDatefin().after(today)) {
+            if (challenge.getDatedebut().after(today) && challenge.getDatefin().after(today) && challenge.getEtat1()) {
                 filteredChallenges.add(challenge);
             }
         }
         filteredChallenges.forEach(challenge -> {
+
             challenge.updateChallengeStatus();
             challengeRepository.save(challenge);
         });
@@ -158,80 +162,99 @@ public class ChallengeController {
     }
 
     @GetMapping("/decroissant")
-    public List<Challenge> decroissant(){
-        List<Challenge> challenges = challengeService.afficher();
+    public List<Challenge> decroissant() {
+        List<Challenge> challenges = new ArrayList<>();
+        challengeService.afficher().forEach(challenge -> {
+            if (challenge.getEtat1()) {
+                challenges.add(challenge);
+            }
+        });
+        //challengeService.afficher();
         challenges.sort((o1, o2) -> (int) (o2.getId() - o1.getId()));
+
         challenges.forEach(challenge -> {
+
             challenge.updateChallengeStatus();
             challengeRepository.save(challenge);
-        });        return challenges.subList(0, Math.min(challenges.size(), 8));
+        });
+        return challenges;
     }
 
-/*        @PutMapping("/{id}")
-    public Message updateCategory(@PathVariable Long id, @RequestBody Challenge challenge) {
-        return challengeService.modifier(id,challenge);
-    }*/
-@PutMapping("/modification/{id}")
-public Message modifyChallenge(
-        @PathVariable Long id,
-        @RequestParam("critereIds") Long[] critereIds,
-        @RequestParam("tecnhoIds") Long[] tecnhoIds,
-        @RequestParam("cateIds") Long[] cateIds,
-        @RequestParam("titre") String titre,
-        @RequestParam("description") String description,
-        @RequestParam("datedebut") Date datedebut,
-        @RequestParam("datefin") Date datefin,
-        @RequestParam("photo") MultipartFile photo
-) {
-    Challenge challenge = challengeService.ChallengeParId(id);
-    if (challenge == null) {
-        return Message.set("Challenge not found", false);
-    }
-    if (challenge.getDatedebut().before(new Date())) {
-        return Message.set("Desolé cet challenge ne peut pas être modifié", false);
-    }
-    challenge.setTitre(titre);
-    challenge.setDescription(description);
-    challenge.setDatedebut(datedebut);
-    challenge.setDatefin(datefin);
-    String photoName = titre + photo.getOriginalFilename();
-    challenge.setPhoto(photoName);
-    try {
-        challenge.setPhoto(SaveImage.save(photo, photoName, "challenge"));
-    } catch (Exception e) {
-        return Message.set("An error occurred while saving the image", false);
-    }
-
-    Set<critere> criteria = new HashSet<>();
-    for (Long critereId : critereIds) {
-        critere crit = critereRepository1.findById(critereId).orElse(null);
-        if (crit != null) {
-            criteria.add(crit);
+    /*        @PutMapping("/{id}")
+        public Message updateCategory(@PathVariable Long id, @RequestBody Challenge challenge) {
+            return challengeService.modifier(id,challenge);
+        }*/
+    @PutMapping("/modification/{id}")
+    public Message modifyChallenge(
+            @PathVariable Long id,
+            @RequestParam(value = "critereIds") Long[] critereIds,
+            @RequestParam(value = "tecnhoIds", required = false) Long[] tecnhoIds,
+            @RequestParam(value = "cateIds", required = false) Long[] cateIds,
+            @RequestParam(value = "titre", required = false) String titre,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "datedebut", required = false) Date datedebut,
+            @RequestParam(value = "datefin", required = false) Date datefin,
+            @RequestParam(value = "photo", required = false) MultipartFile photo
+    ) {
+        Challenge challenge = challengeService.ChallengeParId(id);
+        if (challenge == null) {
+            return (Message) Message.set("Challenge non trouvé", false);
         }
-    }
-    challenge.setCritere(criteria);
-
-    Set<Categories> categories = new HashSet<>();
-    for (Long cateId : cateIds) {
-        Categories cat = categorieRepository.findById(cateId).orElse(null);
-        if (cat != null) {
-            categories.add(cat);
+        if (challenge.getDatedebut().before(new Date())) {
+            return (Message) Message.set("Desolé cet challenge ne peut pas être modifié", false);
         }
-    }
-    challenge.setCate(categories);
-
-    Set<Technologies> technologies = new HashSet<>();
-    for (Long technhoId : tecnhoIds) {
-        Technologies tech = technoRepository.findById(technhoId).orElse(null);
-        if (tech != null) {
-            technologies.add(tech);
+        challenge.setTitre(titre);
+        challenge.setDescription(description);
+        challenge.setDatedebut(datedebut);
+        challenge.setDatefin(datefin);
+        String photoName = titre + photo.getOriginalFilename();
+        challenge.setPhoto(photoName);
+        try {
+            challenge.setPhoto(SaveImage.save(photo, photoName, "challenge"));
+        } catch (Exception e) {
+            return (Message) Message.set("An error occurred while saving the image", false);
         }
-    }
-    challenge.setTechno(technologies);
 
-    challengeService.modifier(id, challenge);
-    return Message.set("Challenge modified successfully", true);
-}
+        Set<critere> criteria = new HashSet<>();
+        for (Long critereId : critereIds) {
+            critere crit = critereRepository1.findById(critereId).orElse(null);
+            if (crit != null) {
+                criteria.add(crit);
+            }
+        }
+        challenge.setCritere(criteria);
+
+        Set<Categories> categories = new HashSet<>();
+        for (Long cateId : cateIds) {
+            Categories cat = categorieRepository.findById(cateId).orElse(null);
+            if (cat != null) {
+                categories.add(cat);
+            }
+        }
+        challenge.setCate(categories);
+
+        Set<Technologies> technologies = new HashSet<>();
+        for (Long technhoId : tecnhoIds) {
+            Technologies tech = technoRepository.findById(technhoId).orElse(null);
+            if (tech != null) {
+                technologies.add(tech);
+            }
+        }
+        challenge.setTechno(technologies);
+
+        challengeService.modifier(id, challenge);
+        return (Message) Message.set("Challenge modifier avec succès", true);
+    }
+
+    @PutMapping("/modification1/{id}")
+    public Message modifyChallengeEtat(
+            @PathVariable Long id) {
+        Challenge challenge = challengeService.ChallengeParId(id);
+
+        challengeService.modifierEtat1(id);
+        return (Message) Message.set("Challenge supprimé avec succès", true);
+    }
+
     @ApiOperation(value = "Supprimer Technologies")
     @DeleteMapping("/Supprimer/{Id}")
     public String Supprimer(@PathVariable Long Id) {

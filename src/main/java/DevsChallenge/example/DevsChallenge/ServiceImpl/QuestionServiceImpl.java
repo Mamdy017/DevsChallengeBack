@@ -18,7 +18,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public Message creer(Question question) {
         this.questionRepository.save(question);
-        return Message.set("Question psée avec succès",true);
+        return (Message) Message.set("Question psée avec succès",true);
     }
 
     @Override

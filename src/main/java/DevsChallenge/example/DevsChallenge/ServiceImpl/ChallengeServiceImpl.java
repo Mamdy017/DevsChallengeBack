@@ -58,37 +58,37 @@ public class ChallengeServiceImpl implements ChallengeService {
 //                    String text = templateEngine.process("newUserEmailTemplate",context);
 //               //  envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon, Arrays.asList(u.getEmail()),text);
 //                }
-                if (challenge.getDatefin().after(challenge.getDatedebut())){
-                List<Utilisateurs> listutilisateurs = new ArrayList<>();
-                listutilisateurs = utilisateurRepository.findAll();
-                for (Utilisateurs u : listutilisateurs) {
-                    boolean isAdmin = false;
-                    for (Roles r : u.getRoles()) {
-                        if (r.getName() == Role.ROLE_ADMIN || r.getName() == Role.adminuser) {
-                            isAdmin = true;
-                            break;
+                if ((challenge.getDatefin().after(challenge.getDatedebut())) || (challenge.getDatefin().equals(challenge.getDatedebut()))) {
+                    List<Utilisateurs> listutilisateurs = new ArrayList<>();
+                    listutilisateurs = utilisateurRepository.findAll();
+                    for (Utilisateurs u : listutilisateurs) {
+                        boolean isAdmin = false;
+                        for (Roles r : u.getRoles()) {
+                            if (r.getName() == Role.ROLE_ADMIN || r.getName() == Role.adminuser) {
+                                isAdmin = true;
+                                break;
+                            }
+                        }
+                        if (!isAdmin) {
+                            String mon = "DevsCiwara vient de créer la challenge " + challenge.getTitre() + " en savoir plus https://chat.openai.com/auth/login";
+                            Context context = new Context();
+                            String text = templateEngine.process("newUserEmailTemplate", context);
+                            // envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon, Arrays.asList(u.getEmail()),text);
                         }
                     }
-                    if (!isAdmin) {
-                        String mon = "DevsCiwara vient de créer la challenge " + challenge.getTitre() + " en savoir plus https://chat.openai.com/auth/login";
-                        Context context = new Context();
-                        String text = templateEngine.process("newUserEmailTemplate", context);
-                        // envoyeMailService.sendEmailToMultipleRecipients("Nouvelle Challenge",mon, Arrays.asList(u.getEmail()),text);
-                    }
-                }
 
 
-                this.challengeRepository.save(challenge);
-                return Message.set("Challenge creer avec succès", true);
-                }else{
-                    return Message.set("La date de fin ne doit être inferieur à la date de début", false);
+                    this.challengeRepository.save(challenge);
+                    return (Message) Message.set("Challenge creer avec succès", true);
+                } else {
+                    return (Message) Message.set("La date de fin ne doit pas être inferieure à la date de début", false);
                 }
             } else {
-                return Message.set("La date de début doit supperieur à " +
-                        "la date d'ajourd'hui ", false);
+                return (Message) Message.set("La date de début doit être supperieure à " +
+                        "la date d'aujourd'hui ", false);
             }
         } else {
-            return Message.set("Ce challenge existe déjà", false);
+            return (Message) Message.set("Ce challenge existe déjà", false);
         }
     }
 
@@ -183,21 +183,49 @@ public class ChallengeServiceImpl implements ChallengeService {
     public Message modifier(Long id, Challenge challenge) {
         Challenge challenge1 = challengeRepository.findById(id).orElse(null);
         if (challenge1 == null) {
-            return Message.set("erreer", false);
+            return (Message) Message.set("erreur", false);
         }
-        challenge1.setTitre(challenge.getTitre());
-        challenge1.setDescription(challenge.getDescription());
-        challenge1.setDatedebut(challenge.getDatedebut());
-        challenge1.setDatefin(challenge.getDatefin());
-        challenge1.setPhoto(challenge.getPhoto());
-        challenge1.setCritere(challenge.getCritere());
-        challenge1.setTechno(challenge.getTechno());
-        challenge1.setCate(challenge.getCate());
+
+        // Vérifier si les champs ne sont pas nulls ou vides avant de les définir sur l'objet challenge1
+        if (challenge.getTitre() != null && !challenge.getTitre().isEmpty()) {
+            challenge1.setTitre(challenge.getTitre());
+        }
+        if (challenge.getDescription() != null && !challenge.getDescription().isEmpty()) {
+            challenge1.setDescription(challenge.getDescription());
+        }
+        if (challenge.getDatedebut() != null) {
+            challenge1.setDatedebut(challenge.getDatedebut());
+        }
+        if (challenge.getDatefin() != null) {
+            challenge1.setDatefin(challenge.getDatefin());
+        }
+        if (challenge.getPhoto() != null && !challenge.getPhoto().isEmpty()) {
+            challenge1.setPhoto(challenge.getPhoto());
+        }
+        if (challenge.getCritere() != null && !challenge.getCritere().isEmpty()) {
+            challenge1.setCritere(challenge.getCritere());
+        }
+        if (challenge.getTechno() != null && !challenge.getTechno().isEmpty()) {
+            challenge1.setTechno(challenge.getTechno());
+        }
+        if (challenge.getCate() != null && !challenge.getCate().isEmpty()) {
+            challenge1.setCate(challenge.getCate());
+        }
 
         challengeRepository.save(challenge1);
-        return Message.set("Bon travail", true);
+        return (Message) Message.set("Bon travail", true);
     }
 
+    @Override
+    public Message modifierEtat1(Long id) {
+        Challenge challenge1 = challengeRepository.findById(id).orElse(null);
+        if (challenge1 == null) {
+            return (Message) Message.set("Erreur", false);
+        }
+        challenge1.setEtat1(false);
+        challengeRepository.save(challenge1);
+        return (Message) Message.set("Bon travail", true);
+    }
 
 
     @Scheduled(fixedRate = 10 * 1000)

@@ -28,16 +28,16 @@ public class CorrectionServiceImpl implements CorrectionService {
 
     public Message addEtats(List<String> etats, Solution solution, List<critere> criteres) {
         if (etats.size() != criteres.size()) {
-            return Message.set("Le nombre d'états et de critères doit être égal", false);
+            return (Message) Message.set("Le nombre d'états et de critères doit être égal", false);
         }
 
         Solution currentSolution = solutionRepository.findById(solution.getId()).orElse(null);
         if (currentSolution == null) {
-            return Message.set("La solution avec l'ID spécifié n'existe pas", false);
+            return (Message) Message.set("La solution avec l'ID spécifié n'existe pas", false);
         }
 
-        if (currentSolution.getEtat()==1) {
-            return Message.set("Cette solution a déjà été corrigée", false);
+        if (currentSolution.getEtat() == 1) {
+            return (Message) Message.set("Cette solution a déjà été corrigée", false);
         }
 
         int total = 0;
@@ -52,7 +52,7 @@ public class CorrectionServiceImpl implements CorrectionService {
             int bareme = 0;
             if (etat.equals("Valider")) {
                 bareme = baremeObjet.getBareme();
-                System.out.println("mon valeur"+bareme);
+                System.out.println("mon valeur" + bareme);
             } else if (etat.equals("Partiel")) {
                 bareme = baremeObjet.getBareme() / 2;
             }
@@ -67,15 +67,13 @@ public class CorrectionServiceImpl implements CorrectionService {
         currentSolution.setTotal(total);
         solutionRepository.save(currentSolution);
 
-        return Message.set("Les états ont été ajoutés avec succès", true);
+        return (Message) Message.set("Les états ont été ajoutés avec succès", true);
     }
 
     @Override
     public List<Correction> afficher() {
         return correctionRepository.findAll();
     }
-
-
 
 
     // ==========================================================================================================

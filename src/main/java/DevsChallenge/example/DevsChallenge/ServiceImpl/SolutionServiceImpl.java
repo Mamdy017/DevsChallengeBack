@@ -24,7 +24,7 @@ public class SolutionServiceImpl implements SolutionService {
     @Autowired
     private CorrectionRepository correctionRepository;
     @Autowired
-private final TeamUtilisateurRepository teamUtilisateurRepository;
+    private final TeamUtilisateurRepository teamUtilisateurRepository;
    /*@Override
     public Object creer(Solution solution, Utilisateurs utilisateurs, Challenge challenge, Team team) {
 
@@ -56,17 +56,17 @@ private final TeamUtilisateurRepository teamUtilisateurRepository;
         TeamUtilisateurs teamUtilisateurs = teamUtilisateurRepository.findByTeamAndUtilisateurs(team, utilisateurs);
         Date today = new Date();
         if (challenge.getDatefin().before(today)) {
-            return new ResponseEntity<>(Message.set("Le challenge est fermé, vous ne pouvez pas soumettre de solution", false),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Message.set("Le challenge est fermé, vous ne pouvez pas soumettre de solution", false), HttpStatus.BAD_REQUEST);
         } else if (!T) {
             if (solution.getLienGithub().isEmpty() && solution.getSource().isEmpty()) {
                 return new ResponseEntity<>(Message.set("Veuillez ajouter un lien Github ou une source", false), HttpStatus.BAD_REQUEST);
             } else if (!solution.getLienGithub().isEmpty() && !solution.getSource().isEmpty()) {
                 return new ResponseEntity<>(Message.set("Veuillez n'ajouter qu'un lien Github ou une source", false), HttpStatus.BAD_REQUEST);
-            }else if (teamUtilisateurs.getType() != 1) {
+            } else if (teamUtilisateurs.getType() != 1) {
                 return new ResponseEntity<>(Message.set("Vous n'êtes pas autorisé à soumettre une solution", false), HttpStatus.BAD_REQUEST);
             } else {
                 this.solutionRepository.save(solution);
-                return new ResponseEntity<>(Message.set("Solution ajoutée avec succès",true), HttpStatus.CREATED);
+                return new ResponseEntity<>(Message.set("Solution ajoutée avec succès", true), HttpStatus.CREATED);
             }
         } else {
             return new ResponseEntity<>(Message.set("Vous avez déjà ajouté une solution", true), HttpStatus.OK);
@@ -89,7 +89,7 @@ private final TeamUtilisateurRepository teamUtilisateurRepository;
                 return new ResponseEntity<>(Message.set("Veuillez n'ajouter qu'un lien Github ou une source", false), HttpStatus.BAD_REQUEST);
             } else {
                 this.solutionRepository.save(solution);
-                return new ResponseEntity<>(Message.set("Solution ajoutée avec succès",true), HttpStatus.CREATED);
+                return new ResponseEntity<>(Message.set("Solution ajoutée avec succès", true), HttpStatus.CREATED);
             }
         } else {
             return new ResponseEntity<>(Message.set("Vous avez déjà ajouté une solution", false), HttpStatus.BAD_REQUEST);
@@ -104,19 +104,19 @@ private final TeamUtilisateurRepository teamUtilisateurRepository;
 
     @Override
     public Solution modifier(Long id, Solution solution) {
-        return solutionRepository.findById(id).map( s ->{
+        return solutionRepository.findById(id).map(s -> {
             s.setSource(solution.getSource());
             s.setEtat(solution.getEtat());
             s.setLienGithub(solution.getLienGithub());
             return solutionRepository.save(s);
-        }).orElseThrow(()-> new  RuntimeException("Question  non trouvée"));
+        }).orElseThrow(() -> new RuntimeException("Question  non trouvée"));
     }
+
     public List<Solution> getSolutionsByChallengeId(Long challengeId) {
         List<Solution> solutions = solutionRepository.findAllByChallengeId(challengeId);
         solutions.sort((s1, s2) -> s2.getTotal() - s1.getTotal());
         return solutions;
     }
-
 
 
     @Override
@@ -128,7 +128,6 @@ private final TeamUtilisateurRepository teamUtilisateurRepository;
     public List<Solution> findByChallengeId(Long challengeId) {
         return solutionRepository.findByChallengeId(challengeId);
     }
-
 
 
     @Override

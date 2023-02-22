@@ -3,6 +3,7 @@ package DevsChallenge.example.DevsChallenge.Messages;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,9 +14,10 @@ public class Message {
 
     private Boolean status;
 
-    public static Message set(String message, boolean status) {
+    public static Object set(String message, boolean status) {
         return new Message(message, status);
     }
+
 
 
 }

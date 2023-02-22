@@ -12,6 +12,7 @@ import java.util.List;
 public class baremeServiceImpl implements baremeService {
     @Autowired
     baremeRepository baremeRepository1;
+
     @Override
     public bareme creer(bareme bareme1) {
         return baremeRepository1.save(bareme1);

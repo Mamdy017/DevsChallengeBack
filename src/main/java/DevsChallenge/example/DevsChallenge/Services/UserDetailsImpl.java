@@ -30,11 +30,12 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
+    private Boolean etat;
 
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(Long id, String username, String email, String password,String nom, String prenom,
-                           String profile,String numero, int mois,
+                           String profile,String numero, int mois,Boolean etat,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
@@ -44,6 +45,7 @@ public class UserDetailsImpl implements UserDetails {
         this.prenom=prenom;
         this.profile=profile;
         this.numero=numero;
+        this.etat=etat;
                 this.mois=mois;
         this.authorities = authorities;
     }
@@ -62,6 +64,7 @@ public class UserDetailsImpl implements UserDetails {
                 user.getProfile(),
                 user.getNumero(),
                 user.getMois(),
+                user.getEtat(),
                 authorities);
     }
     @Override
