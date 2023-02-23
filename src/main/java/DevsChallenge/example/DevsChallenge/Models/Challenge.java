@@ -25,6 +25,8 @@ public class Challenge {
     @Size(max = 20)
     private String titre;
 
+    @Column(length = 60000)
+
     private String description;
 
     private Date datedebut;
