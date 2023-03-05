@@ -67,7 +67,7 @@ public class CorrectionServiceImpl implements CorrectionService {
         currentSolution.setTotal(total);
         solutionRepository.save(currentSolution);
 
-        return (Message) Message.set("Les états ont été ajoutés avec succès", true);
+        return (Message) Message.set("Correction effectuée avec succès", true);
     }
 
     @Override

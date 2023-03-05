@@ -250,9 +250,7 @@ public class ChallengeController {
     public Message modifyChallengeEtat(
             @PathVariable Long id) {
         Challenge challenge = challengeService.ChallengeParId(id);
-
-        challengeService.modifierEtat1(id);
-        return (Message) Message.set("Challenge supprimé avec succès", true);
+        return this.challengeService.modifierEtat1(id);
     }
 
     @ApiOperation(value = "Supprimer Technologies")

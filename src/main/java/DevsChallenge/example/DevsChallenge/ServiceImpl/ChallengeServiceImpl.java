@@ -220,12 +220,20 @@ public class ChallengeServiceImpl implements ChallengeService {
     public Message modifierEtat1(Long id) {
         Challenge challenge1 = challengeRepository.findById(id).orElse(null);
         if (challenge1 == null) {
-            return (Message) Message.set("Erreur", false);
+            return (Message) Message.set("Une erreur est survenue", false);
+        }
+        String etat = challenge1.getEtat();
+        if (etat.equals("Encours")) {
+            return (Message) Message.set("Le challenge  "+ challenge1.getTitre() + " est en cours et peut pas être modifié", false);
+        }
+        if (etat.equals("Terminé")) {
+            return (Message) Message.set("Le challenge "+ challenge1.getTitre() + " est terminé et peut pas être modifié", false);
         }
         challenge1.setEtat1(false);
         challengeRepository.save(challenge1);
-        return (Message) Message.set("Bon travail", true);
+        return (Message) Message.set("Le challenge "+ challenge1.getTitre() + " a été supprimé", true);
     }
+
 
 
     @Scheduled(fixedRate = 10 * 1000)

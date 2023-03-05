@@ -132,6 +132,6 @@ public class SolutionServiceImpl implements SolutionService {
 
     @Override
     public List<Solution> getNonEtat1Solutions() {
-        return solutionRepository.findByEtatNot("1");
+        return solutionRepository.findByEtatNot(1);
     }
 }
